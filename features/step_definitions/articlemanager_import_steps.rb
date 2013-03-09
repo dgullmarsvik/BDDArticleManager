@@ -12,7 +12,11 @@ Given(/^an article record with (\d+) "(.*?)"$/) do | count, article |
 	@article_record += article
 end	
 
-Given(/^an article record with "(.*?)"$/) do | articles |
+Given(/^an article record with "([^"]*)"$/) do | articles |
+	@article_record = empty_article_record
+	articles.split("\n").each do | article |
+		@article_record += article
+	end
 end
 
 Given(/^an empty article record$/) do
