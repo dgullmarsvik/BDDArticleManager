@@ -49,11 +49,12 @@ Feature: Article Record Import
 
 		Scenarios: 2 valid articles
 			|articles|output|
-			|asdf|asdf|
+			|2013-01-01,Title 1,http://example.org/4/,Tutorial,Description 1\n2012-02-02,Title 2,http://example.org/4/,Guide,Description 2|Added Articles:\n\tTitle 1\n\tTitle 2\n|
 
 		Scenarios: One or more invalid articles
 			|articles|output|
 			|fail|fail|
+
 	Scenario: Importing an already existing article
 
 	
