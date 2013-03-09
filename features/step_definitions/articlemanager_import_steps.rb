@@ -9,9 +9,7 @@ end
 
 Given(/^an article record with "([^"]*)"$/) do | articles |
 	@article_record = empty_article_record
-	articles.split("\n").each do | article |
-		@article_record += article
-	end
+	@article_record += articles
 end
 
 Given(/^an empty article record$/) do
@@ -29,9 +27,6 @@ end
 Then(/^I should see "([^"]*)"$/) do | message |
   output.messages.should include(message.gsub(/\\n/,"\n").gsub(/\\t/, "\t"))
 end
-
-	#
-
 
 def empty_article_record
 	@stockrecord ||= "Date,Title,URL,Categories,Description\n"

@@ -26,7 +26,7 @@ module ArticleManager
 
   	def create_article(article_row, index)
   		begin 
-  			Article.new(article_row.split(","))
+        Article.new(article_row.split(","))
   		rescue Exception => e
   			recover_from_article_creation_exception(e.message, index)
   		end
