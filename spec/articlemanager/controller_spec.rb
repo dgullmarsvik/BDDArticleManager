@@ -39,6 +39,11 @@ module ArticleManager
 					output.should_receive(:puts).with(helper.get_article_response([:testArticleWithTooFewFields]))
 					controller.import(helper.get_article_record([:testArticleWithTooFewFields]))
 				end
+
+				it "sends two article titles to output for an Article Record with two articles" do
+					output.should_receive(:puts).with(helper.get_article_response([:testArticle1, :testArticle2]))
+					controller.import(helper.get_article_record([:testArticle1, :testArticle2]))
+				end
 			end
 
 			context "Article Store with articles present" do
