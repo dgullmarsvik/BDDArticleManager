@@ -62,5 +62,21 @@ module ArticleManager
 				end
 			end
 		end
+
+		describe "#list_all_articles" do
+			context "Empty Article Repository" do
+				let (:output) {double('output').as_null_object}
+				let (:controller) {Controller.new(output, ArticleRecordParser.new, ArticleRepository.new)}
+				let (:helper) {ArticleManagerHelper.new}
+				
+				it "sends 'No Articles in Article Repository' to output" do
+					output.should_receive(:puts).with("No Articles in Article Repository.")
+					controller.list_all_articles
+				end
+			end
+			context "Article Repository with Articles" do
+				it "sends listing of articles to output"
+			end
+		end
 	end
 end
