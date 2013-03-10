@@ -7,7 +7,7 @@ module ArticleManager
   	end
 
     def start
-
+      @output.puts(format_greeting_response)
     end
 
     def quit
@@ -54,16 +54,25 @@ module ArticleManager
     def format_quit_response
       "\nClosing down ArticleManager...\n"
     end
+
+    def format_greeting_response
+      "\nWelcome to ArticleManager!\n\n"
+    end
+
+    def format_help_screen_response
+      "\n\nAvailable Commands for ArticleManager:\n\t[l]: List Articles \n\t[#]: List Details for Article # (# is the id for the article)\n\t\tCommands in the List Details Screen:\n\t\t\t[d]: Delete Article\n\t\t\t[u]: Update Article\n\t\t\t[e]: Exit from the List Details Screen\n\t([a]: Add Article)\n\t[i]: Import Articles\n\t([e]: Export Articles)\n\t[q]: Quit\n\t[h]/[?]: Help (This screen)\n\n\tTo enter a command: enter the corresponding character and press enter"
+    end
   end
 end
 
 #ArticleManager
+#  -> start
 #  v import
 #  v list_articles
 #  v details
 #   x remove
 #   x update
-#  -> quit
+#  v quit
 #  x help: Available Commands for ArticleManager:
 #            [l]: List Articles 
 #            [#]: List Details for Article # (# is the id for the article)
@@ -79,9 +88,9 @@ end
 #
 #           To enter a command: enter the corresponding character and press enter
 #           
-#           [l]: List [#]: Details [i]: Import [h]/[?]: Help [q]: Quit
+#   qcmd    [l]: List [#]: Details [i]: Import [h]/[?]: Help [q]: Quit
 #           [d]: Delete [u]: Update [e]: Exit [h]/[?]: Help [q]: Quit
-#           Command: 
+#   input   Command: 
 #
 #  x add
 #  x export

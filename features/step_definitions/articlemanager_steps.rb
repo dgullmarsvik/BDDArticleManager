@@ -1,3 +1,6 @@
+Given(/^that ArticleManager is not running$/) do
+end
+
 Given(/^that ArticleManager is running$/) do
 	@controller = ArticleManager::Controller.new(output, ArticleManager::ArticleRecordParser.new, ArticleManager::ArticleRepository.new)
 	@controller.start 
@@ -58,6 +61,12 @@ When(/^I list the details for article "(.*?)"$/) do | article_id |
   @controller.list_details_for_article_with_id(checked_id)
 end
 
+When(/^I start ArticleManager$/) do
+	@controller = ArticleManager::Controller.new(output, ArticleManager::ArticleRecordParser.new, ArticleManager::ArticleRepository.new)
+  @controller.start
+end
+
+
 When(/^I quit the program$/) do
   @controller.quit
 end
@@ -74,6 +83,12 @@ end
 Then(/^I should see "([^"]*)"$/) do | message |
   output.messages.should include(message.gsub(/\\n/,"\n").gsub(/\\t/, "\t"))
 end
+
+Then(/^I should see the help screen$/) do
+	pending
+	output.messages.should include("\n\nAvailable Commands for ArticleManager:\n\t[l]: List Articles \n\t[#]: List Details for Article # (# is the id for the article)\n\t\tCommands in the List Details Screen:\n\t\t\t[d]: Delete Article\n\t\t\t[u]: Update Article\n\t\t\t[e]: Exit from the List Details Screen\n\t([a]: Add Article)\n\t[i]: Import Articles\n\t([e]: Export Articles)\n\t[q]: Quit\n\t[h]/[?]: Help (This screen)\n\n\tTo enter a command: enter the corresponding character and press enter")
+end
+
 
 def empty_article_record
 	@stockrecord ||= "Date,Title,URL,Categories,Description\n"

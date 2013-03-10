@@ -132,6 +132,17 @@ module ArticleManager
 		end
 
 		describe "#start" do
+			it "sends greeting message to output" do
+				output.should_receive(:puts).with("\nWelcome to ArticleManager!\n\n")
+				controller.start
+			end
+
+			it "sends help screen message to output" do
+				pending
+				output.should_receive(:puts).with("\n\nAvailable Commands for ArticleManager:\n\t[l]: List Articles \n\t[#]: List Details for Article # (# is the id for the article)\n\t\tCommands in the List Details Screen:\n\t\t\t[d]: Delete Article\n\t\t\t[u]: Update Article\n\t\t\t[e]: Exit from the List Details Screen\n\t([a]: Add Article)\n\t[i]: Import Articles\n\t([e]: Export Articles)\n\t[q]: Quit\n\t[h]/[?]: Help (This screen)\n\n\tTo enter a command: enter the corresponding character and press enter")
+				controller.start
+			end
+
 		end
 
 		describe "#quit" do
