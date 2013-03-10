@@ -18,16 +18,8 @@ module ArticleManager
     end
 
     def list_details_for_article_with_id(article_id)
-      # article = @article_repository.find_by_id(article_id)
-      if !article_id.is_a?(Integer)
-        @output.puts("\nError: Only positive integers are allowed to be ids.")
-      elsif article_id <= 0
-        @output.puts("\nError: Only positive integers are allowed to be ids.")
-      elsif article_id > 2
-        @output.puts("\nError: No article with ID: '3' exists")
-      else  
-        @output.puts("\nList Article With ID: #{article_id.to_s}")
-      end
+      article = @article_repository.find_by_id(article_id)
+      @output.puts(format_details_response(article))
     end
 
   	private
@@ -40,6 +32,10 @@ module ArticleManager
     def format_list_response(articles)
       response = articles.length > 0 ? "\nArticles:" : "No Articles in Article Repository."
       response += articles.collect.with_index { | article, i | "\n\t[#{(i + 1).to_s}]: #{article.title} - #{article.url}" }.join
+    end
+
+    def format_details_response(article)
+      article.to_details
     end
   end
 end

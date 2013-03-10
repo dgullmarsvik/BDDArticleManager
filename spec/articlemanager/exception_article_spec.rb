@@ -38,6 +38,26 @@ module ArticleManager
 				exception_article = ExceptionArticle.new("Duplicate Article",2)
 				exception_article.title.should == "Error, Row 2: Article with identical URL already exists."
 			end
+
+			it "sets title to Non-Positive-Integer ID" do
+				exception_article = ExceptionArticle.new("ID Is Non-Positive-Integer",2)
+				exception_article.title.should == "Error: Only positive integers are allowed to be ids."
+			end
+
+			it "sets title to Non-Existant Article" do
+				exception_article = ExceptionArticle.new("Non-Existant Article",2)
+				exception_article.title.should == "Error: No article with ID: '2' exists."
+			end
+		end
+
+		describe "#to_details" do
+
+			it "returns a formatted string with title" do
+				exception_article = ExceptionArticle.new("Non-Existant Article",2)
+				exception_article.to_details.should == "\nError: No article with ID: '2' exists."
+			end
+
+
 		end
 	end
 end

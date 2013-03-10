@@ -18,9 +18,17 @@ module ArticleManager
         @title = "Error, Row #{index}: Object is not an Article."
       when "Duplicate Article"
         @title = "Error, Row #{index}: Article with identical URL already exists."
+      when "ID Is Non-Positive-Integer"
+        @title = "Error: Only positive integers are allowed to be ids."
+      when "Non-Existant Article"
+        @title = "Error: No article with ID: '#{index}' exists."
   		else
   			@title = "Error, Row #{index}: #{error}"
   		end
   	end
+
+    def to_details
+      "\n#{@title}"
+    end
   end
 end

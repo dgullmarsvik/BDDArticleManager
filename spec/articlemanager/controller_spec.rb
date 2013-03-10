@@ -101,12 +101,12 @@ module ArticleManager
 			let(:local_controller) {Controller.new(local_output, ArticleRecordParser.new, local_repository)}	
 
 			it "sends details for an existing article to output" do
-					local_output.should_receive(:puts).with("\nList Article With ID: 1")
+					local_output.should_receive(:puts).with("\nDetails For: 'Title 1' - url: 'http://www.example.org/1/'\n\tDescription: Description\n\tCategories: Guide\n\tDate: 2012-01-01")
 					local_controller.list_details_for_article_with_id(1)
 			end
 
 			it "sends details for another existing article to output" do
-				local_output.should_receive(:puts).with("\nList Article With ID: 2")
+				local_output.should_receive(:puts).with("\nDetails For: 'Title 2' - url: 'http://www.example.org/2/'\n\tDescription: Description 2\n\tCategories: Tutorial\n\tDate: 2012-01-02")
 				local_controller.list_details_for_article_with_id(2)
 			end
 
@@ -121,7 +121,7 @@ module ArticleManager
 			end
 
 			it "sends error message to output for non-existant article" do
-				local_output.should_receive(:puts).with("\nError: No article with ID: '3' exists")
+				local_output.should_receive(:puts).with("\nError: No article with ID: '3' exists.")
 				local_controller.list_details_for_article_with_id(3)
 			end
 

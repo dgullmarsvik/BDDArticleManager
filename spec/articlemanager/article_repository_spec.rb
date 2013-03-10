@@ -81,13 +81,40 @@ module ArticleManager
 			end
 		end
 		describe "#find_by_id" do
-			it "returns an ExceptionArticle if argument is a non-integer"
+			it "returns an ExceptionArticle if argument is a non-integer" do
+				article_repository.add_array(article_array)
+				article = article_repository.find_by_id("a")
+				article.should be_instance_of(ExceptionArticle)
+				article.title.should == "Error: Only positive integers are allowed to be ids."
+			end
+			
+			it "returns an ExceptionArticle if argument is zero" do
+				article_repository.add_array(article_array)
+				article = article_repository.find_by_id(0)
+				article.should be_instance_of(ExceptionArticle)
+				article.title.should == "Error: Only positive integers are allowed to be ids."
+			end 
 
-			it "returns an ExceptionArticle if argument is a non-positive intger"
+			it "returns an ExceptionArticle if argument is a non-positive integer" do
+				article_repository.add_array(article_array)
+				article = article_repository.find_by_id(-1)
+				article.should be_instance_of(ExceptionArticle)
+				article.title.should == "Error: Only positive integers are allowed to be ids."
+			end
 
-			it "returns an ExceptionArticle if argument is greater than the number of articles in the repository"
+			it "returns an ExceptionArticle if argument is greater than the number of articles in the repository" do
+				article_repository.add_array(article_array)
+				article = article_repository.find_by_id(3)
+				article.should be_instance_of(ExceptionArticle)
+				article.title.should == "Error: No article with ID: '3' exists."
+			end
 
-			it "returns an existing article with the id given in the arument"
+			it "returns an existing article with the id given in the arument" do
+				article_repository.add_array(article_array)
+				article = article_repository.find_by_id(2)
+				article.should be_instance_of(Article)
+				article.title.should == "Title 2"
+			end
 
 		end
 	end
