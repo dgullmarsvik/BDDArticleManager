@@ -11,7 +11,12 @@ module ArticleManager
     end
 
     def quit
+      @output.puts(format_quit_response)
+      @shutdown = true
+    end
 
+    def shutdown
+      @shutdown ||= false
     end
 
   	def import(article_record)
@@ -44,6 +49,10 @@ module ArticleManager
 
     def format_details_response(article)
       article.to_details
+    end
+
+    def format_quit_response
+      "\nClosing down ArticleManager...\n"
     end
   end
 end

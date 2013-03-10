@@ -63,7 +63,7 @@ When(/^I quit the program$/) do
 end
 
 Then(/^ArticleManager should close$/) do
-  pending # express the regexp above with the code you wish you had
+	@controller.shutdown.should == true 
 end
 
 

@@ -135,9 +135,15 @@ module ArticleManager
 		end
 
 		describe "#quit" do
-			it "sends exit message to output"
+			it "sends exit message to output" do
+				output.should_receive(:puts).with("\nClosing down ArticleManager...\n")
+				controller.quit
+			end
 
-			it "sends exit signla"
+			it "quits running" do
+				controller.quit
+				controller.shutdown.should == true
+			end
 		end
 	end
 end

@@ -7,7 +7,7 @@ Feature: Quit Program
 	Scenario: Quit Program
 		Given that ArticleManager is running
 		When I quit the program
-		Then I should see "\nClosing down ArticleManager\n"
+		Then I should see "\nClosing down ArticleManager...\n"
 		And ArticleManager should close
 
 	# TODO: Not needed until data is persisted
