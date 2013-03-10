@@ -1,8 +1,8 @@
 Feature: Article Record Import
 
 	As a manager of articles
-	I want to be able to import article records to my ArticleStore
-	So that I can keep my ArticleStore up to date
+	I want to be able to import article records to my Article Repository
+	So that I can keep my Article Repository up to date
 
 	
 	Scenario: Importing an empty article record
@@ -56,5 +56,8 @@ Feature: Article Record Import
 			|2013-01-01,Title 1,http://example.org/4/,Tutorial,Description 1\nTitle 2,http://example.org/5/,Guide,Description 2|Added Articles:\n\tTitle 1\n\tError, Row 2: An Article Record row needs 5 values.\n|
 
 	Scenario: Importing an already existing article
-
+		Given an Article Repository with articles in it
+		And an article record with an Article that is in the Article Repository
+		When I import the article record
+		Then I should see "Added Articles:\n\tError, Row 0: Article with identical URL already exists.\n"
 	

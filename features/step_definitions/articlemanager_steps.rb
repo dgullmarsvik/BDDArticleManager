@@ -2,6 +2,17 @@ Given(/^an empty ArticleStore$/) do
   @controller = ArticleManager::Controller.new(output, ArticleManager::ArticleRecordParser.new, ArticleManager::ArticleRepository.new)
 end
 
+Given(/^an Article Repository with articles in it$/) do
+	@article_record_row = "2012-04-05,I Exist,http://www.existing.com/,White Paper,Existential ramblings"
+	@article = ArticleManager::Article.new(@article_record_row.split(","))
+	@controller = ArticleManager::Controller.new(output, ArticleManager::ArticleRecordParser.new, ArticleManager::ArticleRepository.new([@article]))
+end
+
+Given(/^an article record with an Article that is in the Article Repository$/) do
+  @article_record = "Date,Title,URL,Categories,Description\n#{@article_record_row}"
+end
+
+
 Given(/^an article record with (\d+) "(.*?)"$/) do | count, article |
 	@article_record = empty_article_record
 	@article_record += article
