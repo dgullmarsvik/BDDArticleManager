@@ -1,4 +1,4 @@
-Feature: Quit Program
+Feature: Start Program
 
 	As a manager of articles
 	I want to get feedback when ArticleManager has started

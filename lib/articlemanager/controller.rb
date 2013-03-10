@@ -8,6 +8,7 @@ module ArticleManager
 
     def start
       @output.puts(format_greeting_response)
+      @output.puts(format_help_screen_response)
     end
 
     def quit
@@ -66,7 +67,7 @@ module ArticleManager
 end
 
 #ArticleManager
-#  -> start
+#  v start
 #  v import
 #  v list_articles
 #  v details
