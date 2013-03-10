@@ -7,7 +7,7 @@ Feature: List the contents of an Article Repository
 	Scenario: Empty Article Respository
 		Given an empty Article Repository
 		When I list all articles
-		Then I should see "No Articles in Article Repository."
+		Then I should see "\nNo Articles in Article Repository."
 
 	Scenario: Article Respository with several articles in it
 		Given an Article Repository with several articles in it

@@ -49,9 +49,9 @@ module ArticleManager
 			end
 		end
 
-		describe "#to_details" do
+		describe "#to_s" do
 			it "returns a formatted string representing the Article" do
-				article.to_details.should == "'Title' - url: 'http://example.org'\n\tDescription: description\n\tCategories: categories\n\tDate: 2012-12-31"
+				article.to_s.should == "'Title' - url: 'http://example.org'\n\tDescription: description\n\tCategories: categories\n\tDate: 2012-12-31"
 			end
 
 		end

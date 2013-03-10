@@ -25,7 +25,7 @@ module ArticleManager
 					controller.import(helper.get_article_record([:testArticleWithSpaces]))
 				end
 
-				it "sends 'No articles added: Empty Article Store.' if the import file is empty" do
+				it "sends 'No articles in Article Record.' if the import file is empty" do
 					output.should_receive(:puts).with(helper.get_article_response([]))
 					controller.import(helper.get_article_record([]))
 				end
@@ -66,7 +66,7 @@ module ArticleManager
 		describe "#list_all_articles" do
 			context "Empty Article Repository" do
 				it "sends 'No Articles in Article Repository' to output" do
-					output.should_receive(:puts).with("No Articles in Article Repository.")
+					output.should_receive(:puts).with("\nNo Articles in Article Repository.")
 					controller.list_all_articles
 				end
 			end

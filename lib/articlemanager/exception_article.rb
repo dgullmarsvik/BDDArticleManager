@@ -27,7 +27,7 @@ module ArticleManager
   		end
   	end
 
-    def to_details
+    def to_s
       @title
     end
   end

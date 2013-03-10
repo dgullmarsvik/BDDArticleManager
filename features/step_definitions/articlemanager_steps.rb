@@ -104,11 +104,6 @@ Then(/^ArticleManager should close$/) do
 	@controller.shutdown.should == true 
 end
 
-
-Then(/^I should only see "No Articles Added: Empty Article Record."$/) do 
-	output.messages.should include("No Articles Added: Empty Article Record.")
-end
-
 Then(/^I should see "([^"]*)"$/) do | message |
   output.messages.should include(message.gsub(/\\n/,"\n").gsub(/\\t/, "\t"))
 end

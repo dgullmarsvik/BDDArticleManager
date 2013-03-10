@@ -17,7 +17,7 @@ module ArticleManager
   		@description = article_array[4].strip
   	end
 
-    def to_details
+    def to_s
       "'#{@title}' - url: '#{@url}'\n\tDescription: #{@description}\n\tCategories: #{@categories}\n\tDate: #{@date.to_s}"
     end
   end

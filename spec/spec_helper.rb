@@ -13,8 +13,8 @@ module ArticleManager
 									testArticleWithTooFewFields: "Error, Row 1: An Article Record row needs 5 values.",
 									testArticleAlreadyPresent: "Error, Row 0: Article with identical URL already exists."}
 			@empty_article_record = "Date,Title,URL,Categories,Description"
-			@response_header = "Added Articles:"
-			@empty_response = "No Articles Added: Empty Article Record."
+			@response_header = "\nAdded Articles:"
+			@empty_response = "\nNo Articles in Article Record."
 		end
 
 		def get_article_record(articles=[])
@@ -35,9 +35,9 @@ module ArticleManager
 		end
 
 		def get_article_response(articles=[])
-			response = articles.empty? ? @empty_response : "#{@response_header}\n"
+			response = articles.empty? ? @empty_response : "#{@response_header}"
 			articles.each do |article|
-				response << "\t#{@titles[article]}\n"
+				response << "\n\t#{@titles[article]}"
 			end
 			response
 		end

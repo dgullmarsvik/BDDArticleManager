@@ -7,16 +7,16 @@ module ArticleManager
   	end
 
     def start
-      @output.puts(format_greeting_response)
-      @output.puts(format_help_screen_response)
+      @output.puts(messages[:greeting])
+      @output.puts(messages[:help])
     end
 
     def help
-      @output.puts(format_help_screen_response)
+      @output.puts(messages[:help])
     end
 
     def quit
-      @output.puts(format_quit_response)
+      @output.puts(messages[:quit])
       @state = :shutdown
     end
 
@@ -27,39 +27,39 @@ module ArticleManager
   	def import(article_record)
   		parsed_articles = @article_parser.parse(article_record)
       imported_articles = @article_repository.add_array(parsed_articles)
-      @output.puts(format_import_response(imported_articles))
-      @output.puts(format_quickhelp_response)
+      @output.puts(import_message(imported_articles))
+      @output.puts(messages[state])
   	end
 
     def list_all_articles
       articles = @article_repository.find_all
-      @output.puts(format_list_response(articles))
-      @output.puts(format_quickhelp_response)
+      @output.puts(list_message(articles))
+      @output.puts(messages[state])
     end
 
     def list_details_for_article_with_id(article_id)
       article = @article_repository.find_by_id(article_id)
       set_state_to_details_if_valid_article(article)
-      @output.puts(format_details_response("Details For",article))
-      @output.puts(format_quickhelp_response)
+      @output.puts(details_message("Details For",article))
+      @output.puts(messages[state])
     end
 
     def delete_article_with_id(article_id)
       article = @article_repository.delete(article_id)
       set_state_to_normal
-      @output.puts(format_details_response("Deleted",article))
-      @output.puts(format_quickhelp_response)
+      @output.puts(details_message("Deleted",article))
+      @output.puts(messages[state])
     end
 
     def exit_details_screen
       set_state_to_normal
-      @output.puts(format_exiting_details_screen_response)
-      @output.puts(format_quickhelp_response)
+      @output.puts(messages[:exit_details])
+      @output.puts(messages[state])
     end
 
     def bad_command
-      @output.puts(format_bad_command_response)
-      @output.puts(format_quickhelp_response)
+      @output.puts(messages[:bad_command])
+      @output.puts(messages[state])
     end
 
     def state
@@ -68,58 +68,34 @@ module ArticleManager
 
   	private
 
-  	def format_import_response(articles)
-  		response = articles.length > 0 ? "Added Articles:\n" : "No Articles Added: Empty Article Record."
-      response += articles.collect { | article | "\t#{article.title}\n" }.join
+  	def import_message(articles)
+      message_heading("Added ", "Record", articles) << articles.collect { | article | "\n\t#{article.title}" }.join
   	end
 
-    def format_list_response(articles)
-      response = articles.length > 0 ? "\nArticles:" : "No Articles in Article Repository."
-      response += articles.collect.with_index { | article, i | "\n\t[#{(i + 1).to_s}]: #{article.title} - #{article.url}" }.join
+    def list_message(articles)
+      message_heading("", "Repository", articles) << articles.collect.with_index { | article, i | "\n\t[#{(i + 1).to_s}]: #{article.title} - #{article.url}" }.join
     end
 
-    def format_details_response(prefix,article)
-      if article.is_a?(ExceptionArticle)
-        "\n#{article.to_details}"
-      else
-        "\n#{prefix}: #{article.to_details}"
-      end
+    def message_heading(prefix,postfix,articles)
+      articles.length > 0 ? "\n#{prefix}Articles:" : "\nNo Articles in Article #{postfix}."
     end
 
-    def format_exiting_details_screen_response
-      "\n\nExiting Details Screen..."
+    def details_message(prefix,article)
+      article.is_a?(ExceptionArticle) ? "\n#{article.to_s}" : "\n#{prefix}: #{article.to_s}"
     end
 
-    def format_quit_response
-      "\nClosing down ArticleManager...\n"
-    end
-
-    def format_greeting_response
-      "\nWelcome to ArticleManager!\n\n"
-    end
-
-    def format_bad_command_response
-      "\n\nError: Unknown command. Enter '?' and press enter to see available commands\n\n"
-    end
-
-    def format_help_screen_response
-      "\n\nAvailable Commands for ArticleManager:\n\t[l]: List Articles \n\t[#]: List Details for Article # (# is the id for the article)\n\t\tCommands in the List Details Screen:\n\t\t\t[d]: Delete Article\n\t\t\t[u]: Update Article\n\t\t\t[e]: Exit from the List Details Screen\n\t([a]: Add Article)\n\t[i]: Import Articles\n\t([e]: Export Articles)\n\t[q]: Quit\n\t[h]/[?]: Help (This screen)\n\n\tTo enter a command: enter the corresponding character and press enter"
-    end
-
-    def format_quickhelp_response
-      if state == :normal
-        "\n\n[l]: List [#]: Details [i]: Import [h]/[?]: Help [q]: Quit"
-      elsif state == :details
-        "\n\n[d]: Delete [u]: Update [e]: Exit [h]/[?]: Help [q]: Quit"
-      else
-        # Do Nothing?
-      end        
+    def messages
+      @messages ||= {exit_details: "\n\nExiting Details Screen...",
+                      quit: "\nClosing down ArticleManager...\n",
+                      greeting: "\nWelcome to ArticleManager!\n\n",
+                      bad_command: "\n\nError: Unknown command. Enter '?' and press enter to see available commands\n\n",
+                      help: "\n\nAvailable Commands for ArticleManager:\n\t[l]: List Articles \n\t[#]: List Details for Article # (# is the id for the article)\n\t\tCommands in the List Details Screen:\n\t\t\t[d]: Delete Article\n\t\t\t[u]: Update Article\n\t\t\t[e]: Exit from the List Details Screen\n\t([a]: Add Article)\n\t[i]: Import Articles\n\t([e]: Export Articles)\n\t[q]: Quit\n\t[h]/[?]: Help (This screen)\n\n\tTo enter a command: enter the corresponding character and press enter",
+                      normal: "\n\n[l]: List [#]: Details [i]: Import [h]/[?]: Help [q]: Quit",
+                      details: "\n\n[d]: Delete [u]: Update [e]: Exit [h]/[?]: Help [q]: Quit"}
     end
 
     def set_state_to_details_if_valid_article(article)
-      if article.is_a?(Article)
-        @state = :details
-      end
+      @state = :details if article.is_a?(Article)
     end
 
     def set_state_to_normal

@@ -50,10 +50,10 @@ module ArticleManager
 			end
 		end
 
-		describe "#to_details" do
+		describe "#to_s" do
 			it "returns a formatted string with title" do
 				exception_article = ExceptionArticle.new("Non-Existant Article",2)
-				exception_article.to_details.should == "Error: No article with ID: '2' exists."
+				exception_article.to_s.should == "Error: No article with ID: '2' exists."
 			end
 		end
 	end
