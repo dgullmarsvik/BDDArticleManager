@@ -51,13 +51,10 @@ module ArticleManager
 		end
 
 		describe "#to_details" do
-
 			it "returns a formatted string with title" do
 				exception_article = ExceptionArticle.new("Non-Existant Article",2)
-				exception_article.to_details.should == "\nError: No article with ID: '2' exists."
+				exception_article.to_details.should == "Error: No article with ID: '2' exists."
 			end
-
-
 		end
 	end
 end

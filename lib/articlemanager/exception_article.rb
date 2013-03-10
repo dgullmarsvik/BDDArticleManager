@@ -28,7 +28,7 @@ module ArticleManager
   	end
 
     def to_details
-      "\n#{@title}"
+      @title
     end
   end
 end

@@ -56,7 +56,11 @@ module ArticleManager
     end
 
     def format_details_response(article)
-      article.to_details
+      if article.is_a?(ExceptionArticle)
+        "\n#{article.to_details}"
+      else
+        "\nDetails For: #{article.to_details}"
+      end
     end
 
     def format_quit_response
@@ -88,6 +92,7 @@ end
 #  v details
 #   x remove
 #   x update
+#   x exit
 #  v quit
 #  v help: Available Commands for ArticleManager:
 #            [l]: List Articles 
