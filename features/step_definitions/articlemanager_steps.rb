@@ -56,6 +56,21 @@ When(/^I list all articles$/) do
   @controller.list_all_articles
 end
 
+When(/^I issue the "(.*?)" command$/) do |command|
+  case command
+  when "help"
+  	@controller.help
+  when "list"
+  	@controller.list_all_articles
+  when "details"
+  	@controller.list_details_for_article_with_id(1)
+  when "import"
+  	@controller.import(@article_record)
+  else
+  	# No command?
+  end
+end
+
 When(/^I list the details for article "(.*?)"$/) do | article_id |
   checked_id = article_id =~ /[[:digit:]]/ ? article_id.to_i : article_id
   @controller.list_details_for_article_with_id(checked_id)

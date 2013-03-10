@@ -33,4 +33,8 @@ The _specs and step_definitions could use alot of refactoring and more helper me
 
 No persistent storage
 
+Add Article Command
+
+Export to CSV Command
+
 Not enough RSpec Examples... ;)
