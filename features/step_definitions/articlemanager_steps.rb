@@ -72,9 +72,15 @@ When(/^I issue the "(.*?)" command$/) do |command|
 end
 
 When(/^I list the details for article "(.*?)"$/) do | article_id |
-  checked_id = article_id =~ /[[:digit:]]/ ? article_id.to_i : article_id
-  @controller.list_details_for_article_with_id(checked_id)
+  converted_id = convert_id(article_id)
+  @controller.list_details_for_article_with_id(converted_id)
 end
+
+When(/^I delete article "(.*?)"$/) do | article_id |
+  converted_id = convert_id(article_id)
+  @controller.delete_article_with_id(converted_id)
+end
+
 
 When(/^I start ArticleManager$/) do
 	@controller = ArticleManager::Controller.new(output, ArticleManager::ArticleRecordParser.new, ArticleManager::ArticleRepository.new)
@@ -103,6 +109,9 @@ Then(/^I should see the help screen$/) do
 	output.messages.should include("\n\nAvailable Commands for ArticleManager:\n\t[l]: List Articles \n\t[#]: List Details for Article # (# is the id for the article)\n\t\tCommands in the List Details Screen:\n\t\t\t[d]: Delete Article\n\t\t\t[u]: Update Article\n\t\t\t[e]: Exit from the List Details Screen\n\t([a]: Add Article)\n\t[i]: Import Articles\n\t([e]: Export Articles)\n\t[q]: Quit\n\t[h]/[?]: Help (This screen)\n\n\tTo enter a command: enter the corresponding character and press enter")
 end
 
+def convert_id(article_id)
+	article_id =~ /[[:digit:]]/ ? article_id.to_i : article_id
+end
 
 def empty_article_record
 	@stockrecord ||= "Date,Title,URL,Categories,Description\n"

@@ -39,7 +39,13 @@ module ArticleManager
 
     def list_details_for_article_with_id(article_id)
       article = @article_repository.find_by_id(article_id)
-      @output.puts(format_details_response(article))
+      @output.puts(format_details_response("Details For",article))
+      @output.puts(format_details_quickhelp_response)
+    end
+
+    def delete_article_with_id(article_id)
+      article = @article_repository.delete(article_id)
+      @output.puts(format_details_response("Deleted",article))
       @output.puts(format_details_quickhelp_response)
     end
 
@@ -55,11 +61,11 @@ module ArticleManager
       response += articles.collect.with_index { | article, i | "\n\t[#{(i + 1).to_s}]: #{article.title} - #{article.url}" }.join
     end
 
-    def format_details_response(article)
+    def format_details_response(prefix,article)
       if article.is_a?(ExceptionArticle)
         "\n#{article.to_details}"
       else
-        "\nDetails For: #{article.to_details}"
+        "\n#{prefix}: #{article.to_details}"
       end
     end
 

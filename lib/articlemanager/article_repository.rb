@@ -34,6 +34,14 @@ module ArticleManager
 			end
 		end
 
+		def delete(id)
+			if is_id_not_valid?(id)
+				recover_from_invalid_id(id)
+			else
+				@internal_storage.delete_at(id - 1)
+			end
+		end
+
 		def find_all
 			return @internal_storage
 		end
