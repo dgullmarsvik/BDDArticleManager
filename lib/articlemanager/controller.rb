@@ -13,24 +13,67 @@ module ArticleManager
   	end
 
     def list_all_articles
-      @output.puts("No Articles in Article Repository.")
+      articles = @article_repository.find_all
+      @output.puts(format_list_response(articles))
+    end
+
+    def list_details_for_article_with_id(article_id)
     end
 
   	private
 
   	def format_import_response(articles)
   		response = articles.length > 0 ? "Added Articles:\n" : "No Articles Added: Empty Article Record."
-      response += articles.collect { |article| "\t#{article.title}\n" }.join
+      response += articles.collect { | article | "\t#{article.title}\n" }.join
   	end
+
+    def format_list_response(articles)
+      response = articles.length > 0 ? "\nArticles:" : "No Articles in Article Repository."
+      response += articles.collect.with_index { | article, i | "\n\t[#{(i + 1).to_s}]: #{article.title} - #{article.url}" }.join
+    end
   end
 end
 
-#BookStore
-#  ->import
-#  list_articles
-#  details
-#   remove
-#   update
+#ArticleManager
+#  v import
+#  v list_articles
+#  -> details
+#   x remove
+#   x update
+#  x quit
+#  x help: Available Commands for ArticleManager:
+#            [l]: List Articles 
+#            [#]: List Details for Article # (# is the id for the article)
+#               Commands in the List Details Screen:
+#                 [d]: Delete Article
+#                 [u]: Update Article
+#                 [e]: Exit from the List Details Screen
+#            ([a]: Add Article)
+#            [i]: Import Articles
+#            ([e]: Export Articles)
+#            [q]: Quit
+#            [h]/[?]: Help (This screen)
 #
-#  add
-#  export
+#           To enter a command: enter the corresponding character and press enter
+#           
+#           [l]: List [#]: Details [i]: Import [h]/[?]: Help [q]: Quit
+#           [d]: Delete [u]: Update [e]: Exit [h]/[?]: Help [q]: Quit
+#           Command: 
+#
+#  x add
+#  x export
+
+# Förmodligen 3-4 timmars refactoring ifrån en lösning jag är nöjd med
+# 
+# Primary concerns:
+#
+# ExceptionArticle känns inte som en bra lösning
+# Jag har inte funderat jätte mycket på namngivning av variabler och metoder
+# Både Features och Specs känns stökiga och otympliga att jobba med just nu - jag hade lagt mestadelen av tiden på refactoring här
+# Jag saknar Scenarios och Unit Tests för att känna mig riktigt trygg med testerna
+# Switch-satsen för att hantera kommandon känns inte som en bra lösning
+#
+# Features som saknas:
+#
+# Export / Persistant Storage
+# 

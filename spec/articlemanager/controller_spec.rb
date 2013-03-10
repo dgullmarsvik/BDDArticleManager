@@ -65,17 +65,32 @@ module ArticleManager
 
 		describe "#list_all_articles" do
 			context "Empty Article Repository" do
-				let (:output) {double('output').as_null_object}
-				let (:controller) {Controller.new(output, ArticleRecordParser.new, ArticleRepository.new)}
-				let (:helper) {ArticleManagerHelper.new}
-				
 				it "sends 'No Articles in Article Repository' to output" do
 					output.should_receive(:puts).with("No Articles in Article Repository.")
 					controller.list_all_articles
 				end
 			end
-			context "Article Repository with Articles" do
-				it "sends listing of articles to output"
+
+			context "Article Repository with Articles in it" do
+				let(:local_output) {double('output').as_null_object}
+				let(:local_repository) {ArticleRepository.new([Article.new("2012-01-01, Title 1,http://www.example.org/1/,Guide,Description".split(","))])}
+				let(:local_controller) {Controller.new(local_output, ArticleRecordParser.new, local_repository)}
+				
+				it "sends listing of articles to output" do
+					local_output.should_receive(:puts).with("\nArticles:\n\t[1]: Title 1 - http://www.example.org/1/")
+					local_controller.list_all_articles
+				end
+
+				# This example is the same as the example above it at
+				# the moment. They should be refactored to be different.
+				#
+				# The point of this example is that each article should
+				# have a unique identifier between brackets like so: "[id]:"
+				# 
+				it "sends an id with each article" do
+					local_output.should_receive(:puts).with("\nArticles:\n\t[1]: Title 1 - http://www.example.org/1/")
+					local_controller.list_all_articles
+				end
 			end
 		end
 	end
