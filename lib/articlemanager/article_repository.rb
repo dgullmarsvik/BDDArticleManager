@@ -57,11 +57,12 @@ module ArticleManager
 
 		def recover_from_invalid_article(article, original_index)
 			if article.instance_of?(ExceptionArticle)
-				return article
+				article
 			elsif !article.instance_of?(Article)
-				return ExceptionArticle.new("Not an Article", original_index)
+				ExceptionArticle.new("Not an Article", original_index)
+			else
+				ExceptionArticle.new("Duplicate Article", original_index)		
 			end
-			ExceptionArticle.new("Duplicate Article", original_index)		
 		end
 	end
 end
