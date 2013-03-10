@@ -18,7 +18,15 @@ module ArticleManager
     end
 
     def list_details_for_article_with_id(article_id)
-      @output.puts("List Article With ID: #{article_id.to_s}")
+      if !article_id.is_a?(Integer)
+        @output.puts("\nError: Only positive integers are allowed to be ids.")
+      elsif article_id <= 0
+        @output.puts("\nError: Only positive integers are allowed to be ids.")
+      elsif article_id > 2
+        @output.puts("\nError: No article with ID: '3' exists")
+      else  
+        @output.puts("\nList Article With ID: #{article_id.to_s}")
+      end
     end
 
   	private

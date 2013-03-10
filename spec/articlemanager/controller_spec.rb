@@ -101,22 +101,34 @@ module ArticleManager
 			let(:local_controller) {Controller.new(local_output, ArticleRecordParser.new, local_repository)}	
 
 			it "sends details for an existing article to output" do
-					local_output.should_receive(:puts).with("List Article With ID: 1")
+					local_output.should_receive(:puts).with("\nList Article With ID: 1")
 					local_controller.list_details_for_article_with_id(1)
 			end
 
 			it "sends details for another existing article to output" do
-				local_output.should_receive(:puts).with("List Article With ID: 2")
+				local_output.should_receive(:puts).with("\nList Article With ID: 2")
 				local_controller.list_details_for_article_with_id(2)
 			end
 
-			it "sends error message to output for id 0"
+			it "sends error message to output for id 0" do
+				local_output.should_receive(:puts).with("\nError: Only positive integers are allowed to be ids.")
+				local_controller.list_details_for_article_with_id(0)
+			end
 
-			it "sends error message to output for negative id"
+			it "sends error message to output for negative id" do
+				local_output.should_receive(:puts).with("\nError: Only positive integers are allowed to be ids.")
+				local_controller.list_details_for_article_with_id(-1)
+			end
 
-			it "sends error message to output for non-existant article"
+			it "sends error message to output for non-existant article" do
+				local_output.should_receive(:puts).with("\nError: No article with ID: '3' exists")
+				local_controller.list_details_for_article_with_id(3)
+			end
 
-			it "sends error message to output for non-integer, non-positive, ids to output"
+			it "sends error message to output for non-integer, non-positive, ids to output" do
+				local_output.should_receive(:puts).with("\nError: Only positive integers are allowed to be ids.")
+				local_controller.list_details_for_article_with_id("a")
+			end
 
 		end
 	end

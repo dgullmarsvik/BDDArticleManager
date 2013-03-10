@@ -51,7 +51,8 @@ When(/^I list all articles$/) do
 end
 
 When(/^I list the details for article "(.*?)"$/) do | article_id |
-  @controller.list_details_for_article_with_id(article_id)
+  checked_id = article_id =~ /[[:digit:]]/ ? article_id.to_i : article_id
+  @controller.list_details_for_article_with_id(checked_id)
 end
 
 
