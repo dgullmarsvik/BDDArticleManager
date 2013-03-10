@@ -18,6 +18,7 @@ module ArticleManager
     end
 
     def list_details_for_article_with_id(article_id)
+      # article = @article_repository.find_by_id(article_id)
       if !article_id.is_a?(Integer)
         @output.puts("\nError: Only positive integers are allowed to be ids.")
       elsif article_id <= 0

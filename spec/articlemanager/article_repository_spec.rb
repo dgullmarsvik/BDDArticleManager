@@ -80,5 +80,15 @@ module ArticleManager
 				added_article.should be_instance_of(ExceptionArticle)
 			end
 		end
+		describe "#find_by_id" do
+			it "returns an ExceptionArticle if argument is a non-integer"
+
+			it "returns an ExceptionArticle if argument is a non-positive intger"
+
+			it "returns an ExceptionArticle if argument is greater than the number of articles in the repository"
+
+			it "returns an existing article with the id given in the arument"
+
+		end
 	end
 end
