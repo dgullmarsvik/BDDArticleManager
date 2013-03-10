@@ -21,40 +21,45 @@ module ArticleManager
     end
 
     def shutdown
-      @state == :shutdown
+      state == :shutdown
     end
 
   	def import(article_record)
   		parsed_articles = @article_parser.parse(article_record)
       imported_articles = @article_repository.add_array(parsed_articles)
       @output.puts(format_import_response(imported_articles))
-      @output.puts(format_normal_quickhelp_response)
+      @output.puts(format_quickhelp_response)
   	end
 
     def list_all_articles
       articles = @article_repository.find_all
       @output.puts(format_list_response(articles))
-      @output.puts(format_normal_quickhelp_response)
+      @output.puts(format_quickhelp_response)
     end
 
     def list_details_for_article_with_id(article_id)
       article = @article_repository.find_by_id(article_id)
       set_state_to_details_if_valid_article(article)
       @output.puts(format_details_response("Details For",article))
-      @output.puts(format_details_quickhelp_response)
+      @output.puts(format_quickhelp_response)
     end
 
     def delete_article_with_id(article_id)
       article = @article_repository.delete(article_id)
       set_state_to_normal
       @output.puts(format_details_response("Deleted",article))
-      @output.puts(format_details_quickhelp_response)
+      @output.puts(format_quickhelp_response)
     end
 
     def exit_details_screen
-      @state = :normal
+      set_state_to_normal
       @output.puts(format_exiting_details_screen_response)
-      @output.puts(format_normal_quickhelp_response)
+      @output.puts(format_quickhelp_response)
+    end
+
+    def bad_command
+      @output.puts(format_bad_command_response)
+      @output.puts(format_quickhelp_response)
     end
 
     def state
@@ -93,16 +98,22 @@ module ArticleManager
       "\nWelcome to ArticleManager!\n\n"
     end
 
+    def format_bad_command_response
+      "\n\nError: Unknown command. Enter '?' and press enter to see available commands\n\n"
+    end
+
     def format_help_screen_response
       "\n\nAvailable Commands for ArticleManager:\n\t[l]: List Articles \n\t[#]: List Details for Article # (# is the id for the article)\n\t\tCommands in the List Details Screen:\n\t\t\t[d]: Delete Article\n\t\t\t[u]: Update Article\n\t\t\t[e]: Exit from the List Details Screen\n\t([a]: Add Article)\n\t[i]: Import Articles\n\t([e]: Export Articles)\n\t[q]: Quit\n\t[h]/[?]: Help (This screen)\n\n\tTo enter a command: enter the corresponding character and press enter"
     end
 
-    def format_normal_quickhelp_response
-      "\n\n[l]: List [#]: Details [i]: Import [h]/[?]: Help [q]: Quit"
-    end
-
-    def format_details_quickhelp_response
-      "\n\n[d]: Delete [u]: Update [e]: Exit [h]/[?]: Help [q]: Quit"
+    def format_quickhelp_response
+      if state == :normal
+        "\n\n[l]: List [#]: Details [i]: Import [h]/[?]: Help [q]: Quit"
+      elsif state == :details
+        "\n\n[d]: Delete [u]: Update [e]: Exit [h]/[?]: Help [q]: Quit"
+      else
+        # Do Nothing?
+      end        
     end
 
     def set_state_to_details_if_valid_article(article)

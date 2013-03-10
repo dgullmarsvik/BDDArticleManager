@@ -213,6 +213,13 @@ module ArticleManager
 
 		end
 
+		describe "#bad_command" do
+			it "sends a bad command message to output" do
+				output.should_receive(:puts).with("\n\nError: Unknown command. Enter '?' and press enter to see available commands\n\n")
+				controller.bad_command
+			end
+		end
+
 		describe "#quit" do
 			it "sends exit message to output" do
 				output.should_receive(:puts).with("\nClosing down ArticleManager...\n")

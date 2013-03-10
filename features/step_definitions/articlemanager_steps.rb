@@ -72,6 +72,8 @@ When(/^I issue the "(.*?)" command$/) do |command|
   	@controller.import(@article_record)
   when "exit_details"
   	@controller.exit_details_screen
+  when "bad"
+  	@controller.bad_command
   else
   	# No command?
   end

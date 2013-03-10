@@ -19,11 +19,9 @@ lib: Source Code
 	
 	Controller: Input/Output Manager
 
-Notes:
+Some features of the Program I'm not satisfied with:
 
-Som features of the Program I'm not satisfied with:
-
-ExceptionArticle for ErrorHandling: Not a good solution, atleast it is somewhat isolated.
+ExceptionArticle for ErrorHandling: Not a good solution, and not enough isolation for a bad solution.
 
 Main Switch: Should probably use a command pattern instead.
 
