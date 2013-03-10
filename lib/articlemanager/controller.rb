@@ -18,7 +18,7 @@ module ArticleManager
     end
 
     def list_details_for_article_with_id(article_id)
-      @output.puts("List Article With ID: 1")
+      @output.puts("List Article With ID: #{article_id.to_s}")
     end
 
   	private

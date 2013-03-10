@@ -105,7 +105,10 @@ module ArticleManager
 					local_controller.list_details_for_article_with_id(1)
 			end
 
-			it "sends details for another existing article to output"
+			it "sends details for another existing article to output" do
+				local_output.should_receive(:puts).with("List Article With ID: 2")
+				local_controller.list_details_for_article_with_id(2)
+			end
 
 			it "sends error message to output for id 0"
 
