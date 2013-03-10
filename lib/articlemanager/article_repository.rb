@@ -10,6 +10,7 @@ module ArticleManager
 
 		def add(article)
 			@internal_storage << article
+			article
 		end
 
 		def find_all
