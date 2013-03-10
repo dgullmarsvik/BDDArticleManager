@@ -9,7 +9,7 @@ Layout:
 ---------
 - features: Cucumber features
 - spec: RSpec Examples
-- lib: Source Code
+- lib: Ruby Source Code
 	- ArticleRepository: Wrapper around the (non-existant)Persistance layer.
 	
 	- Article: Represents an article
