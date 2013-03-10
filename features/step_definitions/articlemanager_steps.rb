@@ -1,3 +1,8 @@
+Given(/^that ArticleManager is running$/) do
+	@controller = ArticleManager::Controller.new(output, ArticleManager::ArticleRecordParser.new, ArticleManager::ArticleRepository.new)
+	@controller.init  
+end
+
 Given(/^an empty Article Repository$/) do
   @controller = ArticleManager::Controller.new(output, ArticleManager::ArticleRecordParser.new, ArticleManager::ArticleRepository.new)
 end
@@ -22,11 +27,9 @@ Given(/^an Article Repository with several articles in it$/) do
 	@controller = ArticleManager::Controller.new(output, ArticleManager::ArticleRecordParser.new, ArticleManager::ArticleRepository.new(@article_array))
 end
 
-
 Given(/^an article record with an Article that is in the Article Repository$/) do
   @article_record = "Date,Title,URL,Categories,Description\n#{@article_record_row}"
 end
-
 
 Given(/^an article record with (\d+) "(.*?)"$/) do | count, article |
 	@article_record = empty_article_record
@@ -55,6 +58,9 @@ When(/^I list the details for article "(.*?)"$/) do | article_id |
   @controller.list_details_for_article_with_id(checked_id)
 end
 
+When(/^I quit the program$/) do
+  @controller.quit
+end
 
 Then(/^I should only see "No Articles Added: Empty Article Record."$/) do 
 	output.messages.should include("No Articles Added: Empty Article Record.")
