@@ -96,15 +96,25 @@ module ArticleManager
 
 		describe "#list_details_for_article_with_id" do
 			let(:local_output) {double('output').as_null_object}
-			let(:local_repository) {ArticleRepository.new([Article.new("2012-01-01, Title 1,http://www.example.org/1/,Guide,Description".split(","))])}
+			let(:local_repository) {ArticleRepository.new([Article.new("2012-01-01, Title 1,http://www.example.org/1/,Guide,Description".split(",")),
+																										 Article.new("2012-01-02, Title 2,http://www.example.org/2/,Tutorial,Description 2".split(","))])}
 			let(:local_controller) {Controller.new(local_output, ArticleRecordParser.new, local_repository)}	
 
-			it "sends details for existing article to output"
+			it "sends details for an existing article to output" do
+					local_output.should_receive(:puts).with("List Article With ID: 1")
+					local_controller.list_details_for_article_with_id(1)
+			end
+
+			it "sends details for another existing article to output"
+
+			it "sends error message to output for id 0"
+
+			it "sends error message to output for negative id"
 
 			it "sends error message to output for non-existant article"
 
 			it "sends error message to output for non-integer, non-positive, ids to output"
-			
+
 		end
 	end
 end
