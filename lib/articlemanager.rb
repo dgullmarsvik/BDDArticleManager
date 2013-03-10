@@ -1,4 +1,5 @@
 require 'articlemanager/controller'
 require 'articlemanager/article'
-require 'articlemanager/exceptionarticle'
-require 'articlemanager/articlerecordparser'
+require 'articlemanager/exception_article'
+require 'articlemanager/article_record_parser'
+require 'articlemanager/article_repository'

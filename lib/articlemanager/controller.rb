@@ -1,13 +1,14 @@
 module ArticleManager
   class Controller
-  	def initialize(output, article_parser)
+  	def initialize(output, article_parser, article_repository)
   		@output = output
       @article_parser = article_parser
+      @article_repository = article_repository
   	end
 
   	def import(article_record)
-  		imported_articles = @article_parser.parse(article_record)
-  		@output.puts(format_response(imported_articles))
+  		parsed_articles = @article_parser.parse(article_record)
+  		@output.puts(format_response(parsed_articles))
   	end
 
   	private

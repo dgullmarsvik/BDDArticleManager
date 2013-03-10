@@ -4,7 +4,7 @@ module ArticleManager
 	describe Controller do
 		
 		let (:output) {double('output')}
-		let (:controller) {Controller.new(output, ArticleRecordParser.new)}
+		let (:controller) {Controller.new(output, ArticleRecordParser.new, ArticleRepository.new)}
 		let (:helper) {ArticleManagerHelper.new}
 
 		describe "#import" do
