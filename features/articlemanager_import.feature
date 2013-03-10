@@ -49,11 +49,11 @@ Feature: Article Record Import
 
 		Scenarios: 2 valid articles
 			|articles|output|
-			|2013-01-01,Title 1,http://example.org/4/,Tutorial,Description 1\n2012-02-02,Title 2,http://example.org/4/,Guide,Description 2|Added Articles:\n\tTitle 1\n\tTitle 2\n|
+			|2013-01-01,Title 1,http://example.org/4/,Tutorial,Description 1\n2012-02-02,Title 2,http://example.org/5/,Guide,Description 2|Added Articles:\n\tTitle 1\n\tTitle 2\n|
 
 		Scenarios: One or more invalid articles
 			|articles|output|
-			|fail|fail|
+			|2013-01-01,Title 1,http://example.org/4/,Tutorial,Description 1\nTitle 2,http://example.org/5/,Guide,Description 2|Added Articles:\n\tTitle 1\n\tError, Row 2: An Article Record row needs 5 values.\n|
 
 	Scenario: Importing an already existing article
 

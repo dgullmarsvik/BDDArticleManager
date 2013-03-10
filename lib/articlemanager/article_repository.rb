@@ -8,14 +8,14 @@ module ArticleManager
 		end
 
 		def add_array(article_array)
-			article_array.collect.with_index { | article, i | add(article, i) }
+			collected_articles = article_array.collect.with_index { | article, i | add(article, i) }
 		end
 
 		def add(article, original_index = 1)
 			if !is_article_valid_for_insertion?(article)
 				return recover_from_invalid_article(article, original_index)
 			end
-			@internal_storage.push(article).first
+			@internal_storage.push(article).last
 		end
 
 		def exists?(article)

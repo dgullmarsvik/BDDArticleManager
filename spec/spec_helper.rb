@@ -11,7 +11,7 @@ module ArticleManager
 									testArticle2: "Advanced Article Management",
 									testArticleWithSpaces: "Subtle Article Management",
 									testArticleWithTooFewFields: "Error, Row 1: An Article Record row needs 5 values.",
-									testArticleAlreadyPresent: "Error, Row 1: Article with identical URL already exists."}
+									testArticleAlreadyPresent: "Error, Row 0: Article with identical URL already exists."}
 			@empty_article_record = "Date,Title,URL,Categories,Description"
 			@response_header = "Added Articles:"
 			@empty_response = "No Articles Added: Empty Article Record."

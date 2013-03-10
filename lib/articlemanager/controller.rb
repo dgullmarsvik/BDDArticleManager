@@ -8,14 +8,15 @@ module ArticleManager
 
   	def import(article_record)
   		parsed_articles = @article_parser.parse(article_record)
-  		@output.puts(format_import_response(parsed_articles))
+      imported_articles = @article_repository.add_array(parsed_articles)
+      @output.puts(format_import_response(imported_articles))
   	end
 
   	private
 
   	def format_import_response(articles)
   		response = articles.length > 0 ? "Added Articles:\n" : "No Articles Added: Empty Article Record."
-  		response += articles.collect { |article| "\t#{article.title}\n" }.join
+      response += articles.collect { |article| "\t#{article.title}\n" }.join
   	end
   end
 end
