@@ -1,5 +1,5 @@
 Given(/^an empty ArticleStore$/) do
-  @controller = ArticleManager::Controller.new(output, ArticleManager::ArticleImporter.new)
+  @controller = ArticleManager::Controller.new(output, ArticleManager::ArticleRecordParser.new)
 end
 
 Given(/^an article record with (\d+) "(.*?)"$/) do | count, article |
