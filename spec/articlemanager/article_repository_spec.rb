@@ -32,5 +32,31 @@ module ArticleManager
 			end
 
 		end
+
+		describe "#find_by_url" do
+			it "returns an article in the repository that matches the url" do
+				article_repository.add_array(article_array)
+				article = article_repository.find_by_url("http://example.org/2/")
+				article.url.should == "http://example.org/2/"
+			end
+
+			it "returns nil if no article in the repsoitory matches the url" do
+				article_repository.add_array(article_array)
+				article = article_repository.find_by_url("http://example.org/3/")
+				article.url.should be_nil
+			end
+		end
+
+		describe "#find_all" do
+			it "returns all articles in the repository"
+
+			it "returns an empty array if no articles are stored in the repsitory"
+		end
+
+		describe "#add" do
+			it "add an article to the repository and returns the added article"
+
+			it "returns an ExcpetionArticle if an article with the same url already exists in the repository"
+		end
 	end
 end

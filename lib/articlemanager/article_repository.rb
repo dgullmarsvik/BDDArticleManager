@@ -13,6 +13,10 @@ module ArticleManager
 			article
 		end
 
+		def find_by_url(url)
+			article_array.select{ | x | x.url == url }.first
+		end
+
 		def find_all
 			return @internal_storage
 		end
