@@ -129,7 +129,15 @@ module ArticleManager
 				local_output.should_receive(:puts).with("\nError: Only positive integers are allowed to be ids.")
 				local_controller.list_details_for_article_with_id("a")
 			end
+		end
 
+		describe "#start" do
+		end
+
+		describe "#quit" do
+			it "sends exit message to output"
+
+			it "sends exit signla"
 		end
 	end
 end

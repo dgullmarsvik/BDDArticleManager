@@ -1,6 +1,6 @@
 Given(/^that ArticleManager is running$/) do
 	@controller = ArticleManager::Controller.new(output, ArticleManager::ArticleRecordParser.new, ArticleManager::ArticleRepository.new)
-	@controller.init  
+	@controller.start 
 end
 
 Given(/^an empty Article Repository$/) do
@@ -61,6 +61,11 @@ end
 When(/^I quit the program$/) do
   @controller.quit
 end
+
+Then(/^ArticleManager should close$/) do
+  pending # express the regexp above with the code you wish you had
+end
+
 
 Then(/^I should only see "No Articles Added: Empty Article Record."$/) do 
 	output.messages.should include("No Articles Added: Empty Article Record.")

@@ -6,6 +6,14 @@ module ArticleManager
       @article_repository = article_repository
   	end
 
+    def start
+
+    end
+
+    def quit
+
+    end
+
   	def import(article_record)
   		parsed_articles = @article_parser.parse(article_record)
       imported_articles = @article_repository.add_array(parsed_articles)
@@ -43,10 +51,10 @@ end
 #ArticleManager
 #  v import
 #  v list_articles
-#  -> details
+#  v details
 #   x remove
 #   x update
-#  x quit
+#  -> quit
 #  x help: Available Commands for ArticleManager:
 #            [l]: List Articles 
 #            [#]: List Details for Article # (# is the id for the article)
