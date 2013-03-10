@@ -1,6 +1,6 @@
 module ArticleManager
-	class ArticleImporter
-		def import(article_record)
+	class ArticleRecordParser
+		def parse(article_record)
 			record_rows = article_record.split("\n")
   		record_rows.select{ |x| is_article_row?(x) }.collect.with_index do | article_row, i |
   			create_article(article_row, i)
