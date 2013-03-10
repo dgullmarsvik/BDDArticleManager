@@ -2,7 +2,7 @@ Feature: List the Details of an Article
 
 	As a manager of articles
 	I want to be able to list Details of a specific Article in my Article Repository
-	So that I can see that the Article is up to date and make changes and delete the Article of necessary
+	So that I can see that the Article is up to date and make changes and delete the Article if necessary
 
 	Scenario Outline: List Details
 		Given an Article Repository with several articles in it
