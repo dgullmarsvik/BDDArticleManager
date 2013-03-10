@@ -13,7 +13,7 @@ module ArticleManager
   	end
 
     def list_all_articles
-
+      @output.puts("No Articles in Article Repository.")
     end
 
   	private
