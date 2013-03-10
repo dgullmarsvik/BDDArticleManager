@@ -18,21 +18,31 @@ module ArticleManager
 					articles[0].title.should == articlehelper.get_article_title(:testArticle1)
 				end
 
-				it "sends a trimmed title of a single imported article with spaces before and after the name"
+				it "returns an Article with a trimmed title" do
+					articles = articleimporter.import(articlehelper.get_article_record([:testArticleWithSpaces]))
+					articles[0].title.should == articlehelper.get_article_title(:testArticleWithSpaces)
+				end
 
-				it "sends 'No articles added: Empty Article Store.' if the import file is empty"
+				it "returns an empty array if the Article Record is empty" do
+					articles = articleimporter.import(articlehelper.get_article_record([]))
+					articles.should be_empty
+				end
 
-				it "sends the titles of all imported articles in an article record"
+				it "returns an array with the correct number of Articles in an article record" do
+					articles = articleimporter.import(articlehelper.get_article_record([:testArticle1, :testArticle2]))
+					articles.length.should == 2
+				end
 
-				it "sends 'Error, Row 2: An Article Record row needs 5 values.' for an article row that has too few fields"
+				it "returns an array with Articles in the same order as in the article record" do
+					articles = articleimporter.import(articlehelper.get_article_record([:testArticle1, :testArticle2]))
+					articles[0].title.should == articlehelper.get_article_title(:testArticle1)
+					articles[1].title.should == articlehelper.get_article_title(:testArticle2)
+				end
 
-				it "sends two article titles to output for an Article Record with two articles"
-			end
-
-			context "Article Store with articles present" do
-				it "sends the title of an imported article to output"
-
-				it "sends 'Error, Row 2: Article URL already present in the Article Store' to output when importing an article that already exists in the article store"
+				it "returns an ExceptionArticle for an Article Record with to few values" do
+					articles = articleimporter.import(articlehelper.get_article_record([:testArticleWithTooFewFields]))
+					articles[0].should be_a(ExceptionArticle)
+				end
 			end
 		end
 	end

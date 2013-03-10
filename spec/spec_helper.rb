@@ -24,6 +24,10 @@ module ArticleManager
 			article_record
 		end
 
+		def get_article_title(article)
+			@titles[article]
+		end
+
 		def get_article_record_with_empty_row(articles=[])
 			article_record = get_article_record(articles)
 			article_record.split("\n").insert(1,"\n").join
