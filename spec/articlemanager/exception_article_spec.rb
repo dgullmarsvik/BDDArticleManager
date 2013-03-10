@@ -28,6 +28,16 @@ module ArticleManager
 				exception_article = ExceptionArticle.new("Missing Title", 2)
 				exception_article.title.should == "Error, Row 2: Missing title for article."
 			end
+
+			it "sets title to Not an Article" do
+				exception_article = ExceptionArticle.new("Not an Article",2)
+				exception_article.title.should == "Error, Row 2: Object is not an Article."
+			end
+
+			it "sets title to Duplicate Article" do
+				exception_article = ExceptionArticle.new("Duplicate Article",2)
+				exception_article.title.should == "Error, Row 2: Article with identical URL already exists."
+			end
 		end
 	end
 end

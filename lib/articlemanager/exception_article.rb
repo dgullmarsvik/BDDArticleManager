@@ -14,6 +14,10 @@ module ArticleManager
   			@title = "Error, Row #{index}: Not a valid Date."
   		when "Missing Title"
   			@title = "Error, Row #{index}: Missing title for article."
+      when "Not an Article"
+        @title = "Error, Row #{index}: Object is not an Article."
+      when "Duplicate Article"
+        @title = "Error, Row #{index}: Article with identical URL already exists."
   		else
   			@title = "Error, Row #{index}: #{error}"
   		end

@@ -3,7 +3,7 @@ require 'spec_helper'
 module ArticleManager
 	describe Controller do
 		
-		let (:output) {double('output')}
+		let (:output) {double('output').as_null_object}
 		let (:controller) {Controller.new(output, ArticleRecordParser.new, ArticleRepository.new)}
 		let (:helper) {ArticleManagerHelper.new}
 
@@ -47,13 +47,19 @@ module ArticleManager
 			end
 
 			context "Article Store with articles present" do
+				let(:local_output) {double('output').as_null_object}
+				let(:local_repository) {ArticleRepository.new([Article.new("2012-01-01, Title 1,http://www.example.org/1/,Guide,Description".split(","))])}
+				let(:local_controller) {Controller.new(local_output, ArticleRecordParser.new, local_repository)}
+				
 				it "sends the title of an imported article to output" do
-					controller.import(helper.get_article_record([:testArticle1]))
-					output.should_receive(:puts).with(helper.get_article_response([:testArticle2]))
-					controller.import(helper.get_article_record([:testArticle2]))
+					local_output.should_receive(:puts).with(helper.get_article_response([:testArticle2]))
+					local_controller.import(helper.get_article_record([:testArticle2]))
 				end
 
-				it "sends 'Error, Row 2: Article URL already present in the Article Store' to output when importing an article that already exists in the article store"
+				it "sends 'Error, Row 2: Article URL already present in the Article Store' to output when importing an article that already exists in the article store" do
+					local_output.should_receive(:puts).with(helper.get_article_response([:testArticleAlreadyPresent]))
+					local_controller.import(helper.get_article_record([:testArticle1]))
+				end
 			end
 		end
 	end
