@@ -12,6 +12,10 @@ module ArticleManager
       @output.puts(format_import_response(imported_articles))
   	end
 
+    def list_all_articles
+
+    end
+
   	private
 
   	def format_import_response(articles)

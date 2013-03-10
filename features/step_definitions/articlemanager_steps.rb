@@ -31,6 +31,11 @@ When(/^I import the article record$/) do
 	@controller.import(@article_record)
 end
 
+When(/^I list all articles$/) do
+  @controller.list_all_articles
+end
+
+
 Then(/^I should only see "No Articles Added: Empty Article Record."$/) do 
 	output.messages.should include("No Articles Added: Empty Article Record.")
 end
