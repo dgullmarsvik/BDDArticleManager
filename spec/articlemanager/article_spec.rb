@@ -10,19 +10,19 @@ module ArticleManager
 				article.id.should == -1
 			end
 
-			it "gives a new article the default value for title" do
+			it "gives a new article the correct value for title" do
 				article.title.should == "Title"
 			end
 
-			it "gives a new article the default value for url" do
+			it "gives a new article the correct value for url" do
 				article.url.should == URI("http://example.org")
 			end
 
-			it "gives a new article the default value for description" do
+			it "gives a new article the correct value for description" do
 				article.description.should == "description"
 			end
 
-			it "gives a new article the default value for categories" do
+			it "gives a new article the correct value for categories" do
 				article.categories.should == "categories"
 			end
 

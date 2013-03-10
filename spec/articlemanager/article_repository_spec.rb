@@ -80,6 +80,7 @@ module ArticleManager
 				added_article.should be_instance_of(ExceptionArticle)
 			end
 		end
+
 		describe "#find_by_id" do
 			it "returns an ExceptionArticle if argument is a non-integer" do
 				article_repository.add_array(article_array)
@@ -115,7 +116,6 @@ module ArticleManager
 				article.should be_instance_of(Article)
 				article.title.should == "Title 2"
 			end
-
 		end
 	end
 end

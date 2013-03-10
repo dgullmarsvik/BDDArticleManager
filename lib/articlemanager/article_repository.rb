@@ -8,7 +8,7 @@ module ArticleManager
 		end
 
 		def add_array(article_array)
-			collected_articles = article_array.collect.with_index { | article, i | add(article, i) }
+			article_array.collect.with_index { | article, i | add(article, i) }
 		end
 
 		def add(article, original_index = 1)
