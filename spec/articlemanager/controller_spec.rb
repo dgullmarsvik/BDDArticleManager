@@ -93,5 +93,18 @@ module ArticleManager
 				end
 			end
 		end
+
+		describe "#list_details_for_article_with_id" do
+			let(:local_output) {double('output').as_null_object}
+			let(:local_repository) {ArticleRepository.new([Article.new("2012-01-01, Title 1,http://www.example.org/1/,Guide,Description".split(","))])}
+			let(:local_controller) {Controller.new(local_output, ArticleRecordParser.new, local_repository)}	
+
+			it "sends details for existing article to output"
+
+			it "sends error message to output for non-existant article"
+
+			it "sends error message to output for non-integer, non-positive, ids to output"
+			
+		end
 	end
 end
