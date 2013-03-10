@@ -44,3 +44,9 @@ Feature: List the Details of an Article
 			|6|\nError: No article with ID: '6' exists.|
 			|a|\nError: Only positive integers are allowed to be ids.|
 
+		Scenario: Exit Details Screen
+			Given an Article Repository with articles in it
+			And I am on the Details Screen
+			When I issue the "exit_details" command
+			Then I should see "\n\nExiting Details Screen..."
+			And I should see "\n\n[l]: List [#]: Details [i]: Import [h]/[?]: Help [q]: Quit"

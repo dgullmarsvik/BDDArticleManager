@@ -94,77 +94,109 @@ module ArticleManager
 			end
 		end
 
-		describe "#list_details_for_article_with_id" do
+		context "Details Screen" do
 			let(:local_output) {double('output').as_null_object}
 			let(:local_repository) {ArticleRepository.new([Article.new("2012-01-01, Title 1,http://www.example.org/1/,Guide,Description".split(",")),
 																										 Article.new("2012-01-02, Title 2,http://www.example.org/2/,Tutorial,Description 2".split(","))])}
 			let(:local_controller) {Controller.new(local_output, ArticleRecordParser.new, local_repository)}	
 
-			it "sends details for an existing article to output" do
-					local_output.should_receive(:puts).with("\nDetails For: 'Title 1' - url: 'http://www.example.org/1/'\n\tDescription: Description\n\tCategories: Guide\n\tDate: 2012-01-01")
+			describe "#list_details_for_article_with_id" do
+				it "sends details for an existing article to output" do
+						local_output.should_receive(:puts).with("\nDetails For: 'Title 1' - url: 'http://www.example.org/1/'\n\tDescription: Description\n\tCategories: Guide\n\tDate: 2012-01-01")
+						local_controller.list_details_for_article_with_id(1)
+				end
+
+				it "sends details for another existing article to output" do
+					local_output.should_receive(:puts).with("\nDetails For: 'Title 2' - url: 'http://www.example.org/2/'\n\tDescription: Description 2\n\tCategories: Tutorial\n\tDate: 2012-01-02")
+					local_controller.list_details_for_article_with_id(2)
+				end
+
+				it "sets state to details for valid id" do
+					local_controller.list_details_for_article_with_id(2)
+					local_controller.state.should == :details
+				end
+
+				it "doesn't change state for invalid id" do
+					local_controller.list_details_for_article_with_id("a")
+					local_controller.state.should == :normal
+				end
+
+				it "sends error message to output for id 0" do
+					local_output.should_receive(:puts).with("\nError: Only positive integers are allowed to be ids.")
+					local_controller.list_details_for_article_with_id(0)
+				end
+
+				it "sends error message to output for negative id" do
+					local_output.should_receive(:puts).with("\nError: Only positive integers are allowed to be ids.")
+					local_controller.list_details_for_article_with_id(-1)
+				end
+
+				it "sends error message to output for non-existant article" do
+					local_output.should_receive(:puts).with("\nError: No article with ID: '3' exists.")
+					local_controller.list_details_for_article_with_id(3)
+				end
+
+				it "sends error message to output for non-integer, non-positive, ids to output" do
+					local_output.should_receive(:puts).with("\nError: Only positive integers are allowed to be ids.")
+					local_controller.list_details_for_article_with_id("a")
+				end
+			end
+
+			describe "delete_article_with_id" do
+				it "sends details for an existing article to output" do
+						local_output.should_receive(:puts).with("\nDeleted: 'Title 1' - url: 'http://www.example.org/1/'\n\tDescription: Description\n\tCategories: Guide\n\tDate: 2012-01-01")
+						local_controller.delete_article_with_id(1)
+				end
+
+				it "sends details for another existing article to output" do
+					local_output.should_receive(:puts).with("\nDeleted: 'Title 2' - url: 'http://www.example.org/2/'\n\tDescription: Description 2\n\tCategories: Tutorial\n\tDate: 2012-01-02")
+					local_controller.delete_article_with_id(2)
+				end
+
+				it "sets state to normal for valid id" do
+					local_controller.delete_article_with_id(2)
+					local_controller.state.should == :normal
+				end
+
+				it "sets state to normal for invalid id" do
+					local_controller.delete_article_with_id("a")
+					local_controller.state.should == :normal
+				end
+
+				it "sends error message to output for id 0" do
+					local_output.should_receive(:puts).with("\nError: Only positive integers are allowed to be ids.")
+					local_controller.delete_article_with_id(0)
+				end
+
+				it "sends error message to output for negative id" do
+					local_output.should_receive(:puts).with("\nError: Only positive integers are allowed to be ids.")
+					local_controller.delete_article_with_id(-1)
+				end
+
+				it "sends error message to output for non-existant article" do
+					local_output.should_receive(:puts).with("\nError: No article with ID: '3' exists.")
+					local_controller.delete_article_with_id(3)
+				end
+
+				it "sends error message to output for non-integer, non-positive, ids to output" do
+					local_output.should_receive(:puts).with("\nError: Only positive integers are allowed to be ids.")
+					local_controller.delete_article_with_id("a")
+				end
+			end
+
+			describe "#exit_details_screen" do
+
+				it "sends exit details screen message to ouput" do
+					local_output.should_receive(:puts).with("\n\nExiting Details Screen...")
+					local_controller.exit_details_screen
+				end
+
+				it "changes state to normal" do
 					local_controller.list_details_for_article_with_id(1)
-			end
-
-			it "sends details for another existing article to output" do
-				local_output.should_receive(:puts).with("\nDetails For: 'Title 2' - url: 'http://www.example.org/2/'\n\tDescription: Description 2\n\tCategories: Tutorial\n\tDate: 2012-01-02")
-				local_controller.list_details_for_article_with_id(2)
-			end
-
-			it "sends error message to output for id 0" do
-				local_output.should_receive(:puts).with("\nError: Only positive integers are allowed to be ids.")
-				local_controller.list_details_for_article_with_id(0)
-			end
-
-			it "sends error message to output for negative id" do
-				local_output.should_receive(:puts).with("\nError: Only positive integers are allowed to be ids.")
-				local_controller.list_details_for_article_with_id(-1)
-			end
-
-			it "sends error message to output for non-existant article" do
-				local_output.should_receive(:puts).with("\nError: No article with ID: '3' exists.")
-				local_controller.list_details_for_article_with_id(3)
-			end
-
-			it "sends error message to output for non-integer, non-positive, ids to output" do
-				local_output.should_receive(:puts).with("\nError: Only positive integers are allowed to be ids.")
-				local_controller.list_details_for_article_with_id("a")
-			end
-		end
-
-		describe "delete_article_with_id" do
-			let(:local_output) {double('output').as_null_object}
-			let(:local_repository) {ArticleRepository.new([Article.new("2012-01-01, Title 1,http://www.example.org/1/,Guide,Description".split(",")),
-																										 Article.new("2012-01-02, Title 2,http://www.example.org/2/,Tutorial,Description 2".split(","))])}
-			let(:local_controller) {Controller.new(local_output, ArticleRecordParser.new, local_repository)}	
-
-			it "sends details for an existing article to output" do
-					local_output.should_receive(:puts).with("\nDeleted: 'Title 1' - url: 'http://www.example.org/1/'\n\tDescription: Description\n\tCategories: Guide\n\tDate: 2012-01-01")
-					local_controller.delete_article_with_id(1)
-			end
-
-			it "sends details for another existing article to output" do
-				local_output.should_receive(:puts).with("\nDeleted: 'Title 2' - url: 'http://www.example.org/2/'\n\tDescription: Description 2\n\tCategories: Tutorial\n\tDate: 2012-01-02")
-				local_controller.delete_article_with_id(2)
-			end
-
-			it "sends error message to output for id 0" do
-				local_output.should_receive(:puts).with("\nError: Only positive integers are allowed to be ids.")
-				local_controller.delete_article_with_id(0)
-			end
-
-			it "sends error message to output for negative id" do
-				local_output.should_receive(:puts).with("\nError: Only positive integers are allowed to be ids.")
-				local_controller.delete_article_with_id(-1)
-			end
-
-			it "sends error message to output for non-existant article" do
-				local_output.should_receive(:puts).with("\nError: No article with ID: '3' exists.")
-				local_controller.delete_article_with_id(3)
-			end
-
-			it "sends error message to output for non-integer, non-positive, ids to output" do
-				local_output.should_receive(:puts).with("\nError: Only positive integers are allowed to be ids.")
-				local_controller.delete_article_with_id("a")
+					local_controller.state.should == :details
+					local_controller.exit_details_screen
+					local_controller.state.should == :normal
+				end
 			end
 		end
 

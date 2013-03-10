@@ -48,6 +48,10 @@ Given(/^an empty article record$/) do
 	@article_record = empty_article_record
 end
 
+Given(/^I am on the Details Screen$/) do
+  @controller.list_details_for_article_with_id(1)
+end
+
 When(/^I import the article record$/) do
 	@controller.import(@article_record)
 end
@@ -66,6 +70,8 @@ When(/^I issue the "(.*?)" command$/) do |command|
   	@controller.list_details_for_article_with_id(1)
   when "import"
   	@controller.import(@article_record)
+  when "exit_details"
+  	@controller.exit_details_screen
   else
   	# No command?
   end

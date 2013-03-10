@@ -17,11 +17,11 @@ module ArticleManager
 
     def quit
       @output.puts(format_quit_response)
-      @shutdown = true
+      @state = :shutdown
     end
 
     def shutdown
-      @shutdown ||= false
+      @state == :shutdown
     end
 
   	def import(article_record)
@@ -39,14 +39,26 @@ module ArticleManager
 
     def list_details_for_article_with_id(article_id)
       article = @article_repository.find_by_id(article_id)
+      set_state_to_details_if_valid_article(article)
       @output.puts(format_details_response("Details For",article))
       @output.puts(format_details_quickhelp_response)
     end
 
     def delete_article_with_id(article_id)
       article = @article_repository.delete(article_id)
+      set_state_to_normal
       @output.puts(format_details_response("Deleted",article))
       @output.puts(format_details_quickhelp_response)
+    end
+
+    def exit_details_screen
+      @state = :normal
+      @output.puts(format_exiting_details_screen_response)
+      @output.puts(format_normal_quickhelp_response)
+    end
+
+    def state
+      @state ||= :normal
     end
 
   	private
@@ -69,6 +81,10 @@ module ArticleManager
       end
     end
 
+    def format_exiting_details_screen_response
+      "\n\nExiting Details Screen..."
+    end
+
     def format_quit_response
       "\nClosing down ArticleManager...\n"
     end
@@ -88,6 +104,16 @@ module ArticleManager
     def format_details_quickhelp_response
       "\n\n[d]: Delete [u]: Update [e]: Exit [h]/[?]: Help [q]: Quit"
     end
+
+    def set_state_to_details_if_valid_article(article)
+      if article.is_a?(Article)
+        @state = :details
+      end
+    end
+
+    def set_state_to_normal
+      @state = :normal
+    end
   end
 end
 
@@ -96,9 +122,9 @@ end
 #  v import
 #  v list_articles
 #  v details
-#   x remove
+#   v remove
 #   x update
-#   x exit
+#   v exit
 #  v quit
 #  v help: Available Commands for ArticleManager:
 #            [l]: List Articles 
