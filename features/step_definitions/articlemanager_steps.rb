@@ -1,4 +1,4 @@
-Given(/^an empty ArticleStore$/) do
+Given(/^an empty Article Repository$/) do
   @controller = ArticleManager::Controller.new(output, ArticleManager::ArticleRecordParser.new, ArticleManager::ArticleRepository.new)
 end
 

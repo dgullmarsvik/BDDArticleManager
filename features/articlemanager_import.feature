@@ -6,14 +6,14 @@ Feature: Article Record Import
 
 	
 	Scenario: Importing an empty article record
-		Given an empty ArticleStore
+		Given an empty Article Repository
 		And an empty article record
 		When I import the article record
 		Then I should only see "No Articles Added: Empty Article Record."
 
 
 	Scenario Outline: Importing an article record with 1 article
-		Given an empty ArticleStore	
+		Given an empty Article Repository	
 		And an article record with 1 "<article>"
 		When I import the article record
 		Then I should see "<output>"
@@ -42,7 +42,7 @@ Feature: Article Record Import
 			|2012-02-01,Title 2,invalid url,Guide,Description 2|Added Articles:\n\tError, Row 1: Not a valid URL.\n|
 
 	Scenario Outline: Importing several articles
-		Given an empty ArticleStore	
+		Given an empty Article Repository	
 		And an article record with "<articles>"
 		When I import the article record
 		Then I should see "<output>"
