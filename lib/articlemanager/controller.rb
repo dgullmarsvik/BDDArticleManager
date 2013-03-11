@@ -117,12 +117,13 @@ end
 
 #ArticleManager
 #  v start
+#   x program loop
 #  v import
 #   x read files
 #  v list_articles
 #  v details
 #   v remove
-#   x update
+#   v update
 #   v exit
 #  v quit
 #  v help: Available Commands for ArticleManager:
@@ -142,7 +143,7 @@ end
 #           
 #   v qcmd    [l]: List [#]: Details [i]: Import [h]/[?]: Help [q]: Quit
 #             [d]: Delete [u]: Update [e]: Exit [h]/[?]: Help [q]: Quit
-#   v input   Enter Command: 
+#   x input   Enter Command: 
 #
 #  x add
 #  x export

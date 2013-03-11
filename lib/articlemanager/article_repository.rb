@@ -4,140 +4,114 @@ require 'date'
 module ArticleManager
 	class ArticleRepository
 		def initialize(article_array = [])
-			raise "Error: ArticleRepository cannot be initialized with a non-Article-array" if article_array.length > 0 && !article_array[0].instance_of?(Article)
-			@internal_storage = article_array
+			raise "Error: ArticleRepository cannot be initialized with a non-Article-array" if article_array.length > 0 && !article_array[0].is_a?(Article)
+			@articles = article_array
 		end
 
 		def add_array(article_array)
-			article_array.collect.with_index { | article, i | add(article, i) }
+			article_array.collect.with_index { | article, i | insert(article, i) }
 		end
 
-		def add(article, original_index = 1)
-			if !is_article_valid_for_insertion?(article)
-				return recover_from_invalid_article(article, original_index)
-			end
-			@internal_storage.push(article).last
+		def insert(article, id = 1)
+			is_insert_bad?(article) ? salvage_bad_insert(article, id) : @articles.push(article).last
+		end
+
+		def delete(id)
+			is_id_bad?(id) ? salvage_bad_id(id) : @articles.delete_at(id - 1)
+		end
+
+		def update_article_with_id(id, article)
+			is_update_bad?(id, article) ? salvage_bad_update(id, article) : @articles[id-1] = article
+		end
+
+		def find_by_id(id)
+			is_id_bad?(id) ? salvage_bad_id(id) : @articles[id - 1]
+		end
+
+		def find_by_url(url)
+			@articles.select{ | x | x.url.to_s == URI(url).to_s }.first
+		end
+
+		def find_all
+			return @articles
 		end
 
 		def exists?(article)
 			!find_by_url(article.url.to_s).nil?
 		end
 
-		def find_by_url(url)
-			@internal_storage.select{ | x | x.url.to_s == URI(url).to_s }.first
-		end
-
-		def find_by_id(id)
-			if is_id_not_valid?(id)
-				recover_from_invalid_id(id)
-			else
-				@internal_storage[id - 1]
-			end
-		end
-
-		def delete(id)
-			if is_id_not_valid?(id)
-				recover_from_invalid_id(id)
-			else
-				@internal_storage.delete_at(id - 1)
-			end
-		end
-
-		def update_article_with_id(id, article)
-			if is_id_not_valid?(id)
-				recover_from_invalid_id(id)
-			elsif !is_article_valid_for_update?(id, article)
-				recover_from_invalid_article_update(id, article)
-			else
-				@internal_storage[id-1] = article
-			end
-		end
-
-		def find_all
-			return @internal_storage
-		end
-
 		private 
-		def is_id_not_valid?(id)
-			!id.is_a?(Integer) || id <= 0 || id > @internal_storage.length
+		def is_id_bad?(id)
+			!id.is_a?(Integer) || id <= 0 || id > @articles.length
 		end
 
-		def recover_from_invalid_id(id)
+		def salvage_bad_id(id)
 			if !id.is_a?(Integer) || id <= 0
 				ExceptionArticle.new("ID Is Non-Positive-Integer", id)
-			elsif id > @internal_storage.length
+			elsif id > @articles.length
 				ExceptionArticle.new("Non-Existant Article", id)
 			end
 		end
 
-		def is_article_valid_for_insertion?(article)
-			article.instance_of?(Article) && !exists?(article)
+		def is_update_bad?(id, article)
+			is_id_bad?(id) || is_article_bad?(id, article)
 		end
 
-		def is_article_valid_for_update?(id, article)
-			article.instance_of?(Article) && 
-			@internal_storage.length >= id &&
-			article.title != "" &&
-			is_article_date_valid?(article) &&
-			is_article_url_valid?(id, article)
-		end
-
-		def is_article_date_valid?(article)
-			return true if article.date.instance_of?(Date)
-			begin
-				Date.parse(article.date)
-			rescue
-				return false
-			end
-			true
-		end
-
-		def is_article_url_valid?(id, article)
-			return false if url_already_exist?(id, article.url)
-			return true if article.url.instance_of?(URI)
-			begin
-				URI(article.url)
-			rescue
-				return false
-			end
-			true
-		end
-
-		def url_already_exist?(original_index, url)
-			exist = false
-			@internal_storage.each.with_index do | a,i | 
-				exist = true if (a.url.to_s == url.to_s) && (i != original_index - 1) 
-			end
-			exist
-		end
-
-		def recover_from_invalid_article_update(original_index,article)
-			if article.instance_of?(ExceptionArticle)
+		def salvage_bad_update(id,article)
+			if is_id_bad?(id)
+				salvage_bad_id(id)
+			elsif article.is_a?(ExceptionArticle)
 				article
-			elsif is_id_not_valid?(original_index)
-				ExceptionArticle.new("ID Is Non-Positive-Integer", original_index)
-			elsif !article.instance_of?(Article)
-				ExceptionArticle.new("Not an Article", original_index)
-			elsif !is_article_date_valid?(article)
-				ExceptionArticle.new("Not A Valid Date", original_index)
-			elsif !is_article_url_valid?(original_index, article)
-				ExceptionArticle.new("Not A Valid URL", original_index)
+			elsif !article.is_a?(Article)
+				ExceptionArticle.new("Not an Article", id)
+			elsif is_date_bad?(article)
+				ExceptionArticle.new("Not A Valid Date", id)
+			elsif is_url_bad?(id, article)
+				ExceptionArticle.new("Not A Valid URL", id)
 			elsif article.title == ""
-				ExceptionArticle.new("Missing Title", original_index)
+				ExceptionArticle.new("Missing Title", id)
 			else
-				raise article.to_s + ":" + "#{original_index.to_i}"
-				ExceptionArticle.new("Duplicate Article", original_index)		
+				ExceptionArticle.new("Unknown Error", id)
 			end
 		end
 
-		def recover_from_invalid_article(article, original_index)
-			if article.instance_of?(ExceptionArticle)
+		def is_insert_bad?(article)
+			!article.instance_of?(Article) || exists?(article)
+		end
+
+		def salvage_bad_insert(article, original_index)
+			if article.is_a?(ExceptionArticle)
 				article
-			elsif !article.instance_of?(Article)
+			elsif !article.is_a?(Article)
 				ExceptionArticle.new("Not an Article", original_index)
 			else
 				ExceptionArticle.new("Duplicate Article", original_index)		
 			end
+		end
+
+		def is_article_bad?(id, article)
+			!article.is_a?(Article) ||
+			article.title == "" ||
+			is_date_bad?(article) ||
+			is_url_bad?(id, article)
+		end
+
+		def is_date_bad?(article)
+			return false if article.date.is_a?(Date)
+			Date.parse(article.date).is_a?(Date) rescue return true
+		end
+
+		def is_url_bad?(id, article)
+			return true if url_is_duplicate?(id, article.url)
+			return false if article.url.is_a?(URI)
+			URI(article.url).is_a?(URI) rescue return true
+		end
+
+		def url_is_duplicate?(id, url)
+			@articles.each.with_index do | a,i | 
+				return true if (a.url.to_s == url.to_s) && (i != id - 1) 
+			end
+			false
 		end
 	end
 end

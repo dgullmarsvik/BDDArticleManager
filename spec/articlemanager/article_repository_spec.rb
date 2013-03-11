@@ -61,22 +61,22 @@ module ArticleManager
 			end
 		end
 
-		describe "#add" do
+		describe "#insert" do
 			it "adds an article to the repository and returns the added article" do
 				article_to_be_added = Article.new(["2012-03-03", "Title 1", "http://example.org/7/", "", ""])
-				added_article = article_repository.add(article_to_be_added)
+				added_article = article_repository.insert(article_to_be_added)
 				article_to_be_added.url.to_s.should == added_article.url.to_s
 			end
 
 			it "returns an ExcpetionArticle if an article with the same url already exists in the repository" do
 				article_repository.add_array(article_array)
 				article_to_be_added = Article.new(["2012-03-03", "Title 1", "http://example.org/2/", "", ""])
-				added_article = article_repository.add(article_to_be_added)
+				added_article = article_repository.insert(article_to_be_added)
 				added_article.should be_instance_of(ExceptionArticle)
 			end
 
 			it "returns an ExceptionArticle if passed a non-Article/ExceptionArticle-object" do
-				added_article = article_repository.add("should get error")
+				added_article = article_repository.insert("should get error")
 				added_article.should be_instance_of(ExceptionArticle)
 			end
 		end
