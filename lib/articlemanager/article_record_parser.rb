@@ -12,11 +12,11 @@ module ArticleManager
       begin 
         Article.new(article_row.split(","))
       rescue Exception => e
-        recover_from_article_creation_exception(e.message, index)
+        salvage_bad_creation(e.message, index)
       end
     end
 
-    def recover_from_article_creation_exception(exception, index)
+    def salvage_bad_creation(exception, index)
       ExceptionArticle.new(exception, index + 1)
     end
 

@@ -142,18 +142,3 @@ end
 #
 #  x add
 #  x export
-
-# Förmodligen 3-4 timmars refactoring ifrån en lösning jag är nöjd med
-# 
-# Primary concerns:
-#
-# ExceptionArticle känns inte som en bra lösning
-# Jag har inte funderat jätte mycket på namngivning av variabler och metoder
-# Både Features och Specs känns stökiga och otympliga att jobba med just nu - jag hade lagt mestadelen av tiden på refactoring här
-# Jag saknar Scenarios och Unit Tests för att känna mig riktigt trygg med testerna
-# Switch-satsen för att hantera kommandon känns inte som en bra lösning
-#
-# Features som saknas:
-#
-# Export / Persistant Storage
-# 
