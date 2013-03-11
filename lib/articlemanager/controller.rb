@@ -39,20 +39,27 @@ module ArticleManager
 
     def list_details_for_article_with_id(article_id)
       article = @article_repository.find_by_id(article_id)
-      set_state_to_details_if_valid_article(article)
+      switch_to_details_screen if valid_article?(article)
       @output.puts(details_message("Details For",article))
       @output.puts(messages[state])
     end
 
     def delete_article_with_id(article_id)
       article = @article_repository.delete(article_id)
-      set_state_to_normal
+      exit_from_details_screen
       @output.puts(details_message("Deleted",article))
       @output.puts(messages[state])
     end
 
+    def update_article_with_id(id, article)
+      article = @article_repository.update_article_with_id(id, article)      
+      exit_from_details_screen if !valid_article?(article)
+      @output.puts(details_message("Updated",article))
+      @output.puts(messages[state])
+    end
+
     def exit_details_screen
-      set_state_to_normal
+      exit_from_details_screen
       @output.puts(messages[:exit_details])
       @output.puts(messages[state])
     end
@@ -94,12 +101,16 @@ module ArticleManager
                       details: "\n\n[d]: Delete [u]: Update [e]: Exit [h]/[?]: Help [q]: Quit"}
     end
 
-    def set_state_to_details_if_valid_article(article)
-      @state = :details if article.is_a?(Article)
+    def switch_to_details_screen
+      @state = :details
     end
 
-    def set_state_to_normal
+    def exit_from_details_screen
       @state = :normal
+    end
+
+    def valid_article?(article)
+      article.is_a?(Article)
     end
   end
 end

@@ -89,12 +89,15 @@ When(/^I delete article "(.*?)"$/) do | article_id |
   @controller.delete_article_with_id(converted_id)
 end
 
+When(/^I update article with "(.*?)" "(.*?)" "(.*?)" "(.*?)" "(.*?)" "(.*?)"$/) do | id, title, url, categories, description, date |
+  converted_id = convert_id(id)
+  @controller.update_article_with_id(converted_id, ArticleManager::Article.new([date,title,url,categories,description]))
+end
 
 When(/^I start ArticleManager$/) do
 	@controller = ArticleManager::Controller.new(output, ArticleManager::ArticleRecordParser.new, ArticleManager::ArticleRepository.new)
   @controller.start
 end
-
 
 When(/^I quit the program$/) do
   @controller.quit

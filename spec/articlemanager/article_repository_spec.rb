@@ -123,5 +123,70 @@ module ArticleManager
 				article_repository.find_by_id(2).title.should_not == deleted_article.title
 			end
 		end
+
+		describe "#update_article_with_id" do
+			it "returns an updated article for valid update" do
+				article_repository.add_array(article_array)
+				updated_article = article_repository.update_article_with_id(2, Article.new(["2012-01-02", "Title 2b", "http://example.org/2/", "", ""]))
+				updated_article.should be_instance_of(Article)
+				updated_article.title.should == "Title 2b"	
+			end
+
+			it "doesn't add or remove articles" do
+				article_repository.add_array(article_array)
+				updated_article = article_repository.update_article_with_id(2, Article.new(["2012-01-02", "Title 2b", "http://example.org/2/", "", ""]))
+				article_repository.find_all.length.should == 2
+			end
+
+			it "returns an ExceptionArticle if url already exist" do
+				article_repository.add_array(article_array)
+				article_to_update = Article.new(["2012-01-02", "Duplicate URL", "http://example.org/1/", "", ""])
+				article_to_update.url = URI("http://example.org/2/")
+				updated_article = article_repository.update_article_with_id(1, article_to_update)
+				updated_article.should be_instance_of(ExceptionArticle)
+			end
+
+			it "returns an ExceptionArticle if title is missing" do
+				article_repository.add_array(article_array)
+				article_to_update = Article.new(["2012-01-02", "miss me?", "http://example.org/2/", "", ""])
+				article_to_update.title = ""
+				updated_article = article_repository.update_article_with_id(2, article_to_update)
+				updated_article.should be_instance_of(ExceptionArticle)
+			end
+			
+			it "returns an ExceptionArticle if date is not valid" do
+				article_repository.add_array(article_array)
+				article_to_update = Article.new(["2012-01-02", "miss me?", "http://example.org/2/", "", ""])
+				article_to_update.date = "not a date"
+				updated_article = article_repository.update_article_with_id(2, article_to_update)
+				updated_article.should be_instance_of(ExceptionArticle)
+			end 
+
+			it "returns an ExceptionArticle if url is not valid" do
+				article_repository.add_array(article_array)
+				article_to_update = Article.new(["2012-01-02", "miss me?", "http://example.org/2/", "", ""])
+				article_to_update.url = "not an url"
+				updated_article = article_repository.update_article_with_id(2, article_to_update)
+				updated_article.should be_instance_of(ExceptionArticle)
+			end
+
+			it "returns an ExceptionArticle for negative id" do
+				article_repository.add_array(article_array)
+				updated_article = article_repository.update_article_with_id(-100, Article.new(["2012-01-02", "Title 2b", "http://example.org/2/", "", ""]))
+				updated_article.should be_instance_of(ExceptionArticle)	
+			end
+
+			it "returns an ExceptionArticle for invalid id" do
+				article_repository.add_array(article_array)
+				updated_article = article_repository.update_article_with_id("a", Article.new(["2012-01-02", "Title 2b", "http://example.org/2/", "", ""]))
+				updated_article.should be_instance_of(ExceptionArticle)	
+			end
+
+			it "returns an ExceptionArticle for non-existant article id" do
+				article_repository.add_array(article_array)
+				updated_article = article_repository.update_article_with_id(1000, Article.new(["2012-01-02", "Title 2b", "http://example.org/2/", "", ""]))
+				updated_article.should be_instance_of(ExceptionArticle)	
+			end
+		end
 	end
 end

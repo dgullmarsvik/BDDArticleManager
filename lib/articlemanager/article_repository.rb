@@ -1,4 +1,5 @@
 require 'uri'
+require 'date'
 
 module ArticleManager
 	class ArticleRepository
@@ -42,6 +43,16 @@ module ArticleManager
 			end
 		end
 
+		def update_article_with_id(id, article)
+			if is_id_not_valid?(id)
+				recover_from_invalid_id(id)
+			elsif !is_article_valid_for_update?(id, article)
+				recover_from_invalid_article_update(id, article)
+			else
+				@internal_storage[id-1] = article
+			end
+		end
+
 		def find_all
 			return @internal_storage
 		end
@@ -61,6 +72,62 @@ module ArticleManager
 
 		def is_article_valid_for_insertion?(article)
 			article.instance_of?(Article) && !exists?(article)
+		end
+
+		def is_article_valid_for_update?(id, article)
+			article.instance_of?(Article) && 
+			@internal_storage.length >= id &&
+			article.title != "" &&
+			is_article_date_valid?(article) &&
+			is_article_url_valid?(id, article)
+		end
+
+		def is_article_date_valid?(article)
+			return true if article.date.instance_of?(Date)
+			begin
+				Date.parse(article.date)
+			rescue
+				return false
+			end
+			true
+		end
+
+		def is_article_url_valid?(id, article)
+			return false if url_already_exist?(id, article.url)
+			return true if article.url.instance_of?(URI)
+			begin
+				URI(article.url)
+			rescue
+				return false
+			end
+			true
+		end
+
+		def url_already_exist?(original_index, url)
+			exist = false
+			@internal_storage.each.with_index do | a,i | 
+				exist = true if (a.url.to_s == url.to_s) && (i != original_index - 1) 
+			end
+			exist
+		end
+
+		def recover_from_invalid_article_update(original_index,article)
+			if article.instance_of?(ExceptionArticle)
+				article
+			elsif is_id_not_valid?(original_index)
+				ExceptionArticle.new("ID Is Non-Positive-Integer", original_index)
+			elsif !article.instance_of?(Article)
+				ExceptionArticle.new("Not an Article", original_index)
+			elsif !is_article_date_valid?(article)
+				ExceptionArticle.new("Not A Valid Date", original_index)
+			elsif !is_article_url_valid?(original_index, article)
+				ExceptionArticle.new("Not A Valid URL", original_index)
+			elsif article.title == ""
+				ExceptionArticle.new("Missing Title", original_index)
+			else
+				raise article.to_s + ":" + "#{original_index.to_i}"
+				ExceptionArticle.new("Duplicate Article", original_index)		
+			end
 		end
 
 		def recover_from_invalid_article(article, original_index)

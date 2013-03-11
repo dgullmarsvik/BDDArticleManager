@@ -184,6 +184,50 @@ module ArticleManager
 				end
 			end
 
+			describe "update_article_with_id" do
+				it "sends details for an existing article to output" do
+						local_output.should_receive(:puts).with("\nUpdated: 'Updated Title' - url: 'http://www.updated.org'\n\tDescription: updated description.\n\tCategories: Guide\n\tDate: 2012-04-01")
+						local_controller.update_article_with_id(2, Article.new(["2012-04-01", "Updated Title", "http://www.updated.org", "Guide", "updated description."]))
+				end
+
+				it "sends details for an existing article to output" do
+						local_output.should_receive(:puts).with("\nUpdated: 'Updated Title 2' - url: 'http://www.updated.org/22/'\n\tDescription: updated description\n\tCategories: Tutorial\n\tDate: 2012-04-02")
+						local_controller.update_article_with_id(1, Article.new(["2012-04-02", "Updated Title 2", "http://www.updated.org/22/", "Tutorial", "updated description"]))
+				end
+
+				it "keeps details state for valid id" do
+					local_controller.list_details_for_article_with_id(2)
+					local_controller.update_article_with_id(2, Article.new(["2012-04-01", "Updated Title", "http://www.updated.org", "Guide", "updated description."]))
+					local_controller.state.should == :details
+				end
+
+				it "sets normal state for invalid id" do
+					local_controller.list_details_for_article_with_id(2)
+					local_controller.update_article_with_id("a", Article.new(["2012-04-01", "Updated Title", "http://www.updated.org", "Guide", "updated description."]))
+					local_controller.state.should == :normal
+				end
+
+				it "sends error message to output for id 0" do
+					local_output.should_receive(:puts).with("\nError: Only positive integers are allowed to be ids.")
+					local_controller.update_article_with_id(0, Article.new(["2012-04-01", "Updated Title", "http://www.updated.org", "Guide", "updated description."]))
+				end
+
+				it "sends error message to output for negative id" do
+					local_output.should_receive(:puts).with("\nError: Only positive integers are allowed to be ids.")
+					local_controller.update_article_with_id(-100, Article.new(["2012-04-01", "Updated Title", "http://www.updated.org", "Guide", "updated description."]))
+				end
+
+				it "sends error message to output for non-existant article" do
+					local_output.should_receive(:puts).with("\nError: No article with ID: '3' exists.")
+					local_controller.update_article_with_id(3, Article.new(["2012-04-01", "Updated Title", "http://www.updated.org", "Guide", "updated description."]))
+				end
+
+				it "sends error message to output for non-integer, non-positive, ids to output" do
+					local_output.should_receive(:puts).with("\nError: Only positive integers are allowed to be ids.")
+					local_controller.update_article_with_id("a", Article.new(["2012-04-01", "Updated Title", "http://www.updated.org", "Guide", "updated description."]))
+				end
+			end
+
 			describe "#exit_details_screen" do
 
 				it "sends exit details screen message to ouput" do
