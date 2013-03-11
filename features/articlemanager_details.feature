@@ -59,7 +59,7 @@ Feature: List the Details of an Article
 
 		Scenarios: Illegal Updates
 			|id|title|url|categories|description|date|output|
-			|1|I Exist 1|http://www.existing.com/4/|White Paper|Existential Ramblings 1|2012-04-01|\nError, Row 1: Not A Valid URL|
+			|1|I Exist 1|http://www.existing.com/4/|White Paper|Existential Ramblings 1|2012-04-01|\nError, Row 1: Article with identical URL already exists.|
 
 		Scenario: Exit Details Screen
 			Given an Article Repository with articles in it

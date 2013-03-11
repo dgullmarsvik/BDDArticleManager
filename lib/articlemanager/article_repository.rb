@@ -13,7 +13,7 @@ module ArticleManager
 		end
 
 		def insert(article, id = 1)
-			is_insert_bad?(article) ? salvage_bad_insert(article, id) : @articles.push(article).last
+			is_insert_bad?(article) ? salvage_bad_article(id, article) : @articles.push(article).last
 		end
 
 		def delete(id)
@@ -54,46 +54,44 @@ module ArticleManager
 		end
 
 		def is_update_bad?(id, article)
-			is_id_bad?(id) || is_article_bad?(id, article)
+			is_id_bad?(id) || is_article_bad?(article) || is_url_duplicate?(id,article.url)
 		end
 
-		def salvage_bad_update(id,article)
+		def salvage_bad_update(id, article)
 			if is_id_bad?(id)
 				salvage_bad_id(id)
-			elsif article.is_a?(ExceptionArticle)
+			else
+				salvage_bad_article(id, article)
+			end
+		end
+
+		def is_insert_bad?(article)
+			is_article_bad?(article) || exists?(article)
+		end
+
+		def salvage_bad_article(id, article)
+			if article.is_a?(ExceptionArticle)
 				article
-			elsif !article.is_a?(Article)
-				ExceptionArticle.new("Not an Article", id)
+			elsif !article.is_a?(Article) 
+				ExceptionArticle.new("Not An Article", id)
 			elsif is_date_bad?(article)
 				ExceptionArticle.new("Not A Valid Date", id)
-			elsif is_url_bad?(id, article)
+			elsif is_url_bad?(article)
 				ExceptionArticle.new("Not A Valid URL", id)
 			elsif article.title == ""
 				ExceptionArticle.new("Missing Title", id)
+			elsif is_url_duplicate?(id,article.url)
+				ExceptionArticle.new("Duplicate Article", id)	
 			else
 				ExceptionArticle.new("Unknown Error", id)
 			end
 		end
 
-		def is_insert_bad?(article)
-			!article.instance_of?(Article) || exists?(article)
-		end
-
-		def salvage_bad_insert(article, original_index)
-			if article.is_a?(ExceptionArticle)
-				article
-			elsif !article.is_a?(Article)
-				ExceptionArticle.new("Not an Article", original_index)
-			else
-				ExceptionArticle.new("Duplicate Article", original_index)		
-			end
-		end
-
-		def is_article_bad?(id, article)
+		def is_article_bad?(article)
 			!article.is_a?(Article) ||
 			article.title == "" ||
 			is_date_bad?(article) ||
-			is_url_bad?(id, article)
+			is_url_bad?(article)
 		end
 
 		def is_date_bad?(article)
@@ -101,13 +99,12 @@ module ArticleManager
 			Date.parse(article.date).is_a?(Date) rescue return true
 		end
 
-		def is_url_bad?(id, article)
-			return true if url_is_duplicate?(id, article.url)
+		def is_url_bad?(article)
 			return false if article.url.is_a?(URI)
 			URI(article.url).is_a?(URI) rescue return true
 		end
 
-		def url_is_duplicate?(id, url)
+		def is_url_duplicate?(id, url)
 			@articles.each.with_index do | a,i | 
 				return true if (a.url.to_s == url.to_s) && (i != id - 1) 
 			end
