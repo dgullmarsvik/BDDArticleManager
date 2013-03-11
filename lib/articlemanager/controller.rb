@@ -39,7 +39,7 @@ module ArticleManager
 
     def list_details_for_article_with_id(article_id)
       article = @article_repository.find_by_id(article_id)
-      switch_to_details_screen if valid_article?(article)
+      switch_to_details_screen if article.is_a?(Article)
       @output.puts(details_message("Details For",article))
       @output.puts(messages[state])
     end
@@ -53,7 +53,7 @@ module ArticleManager
 
     def update_article_with_id(id, article)
       article = @article_repository.update_article_with_id(id, article)      
-      exit_from_details_screen if !valid_article?(article)
+      exit_from_details_screen if !article.is_a?(Article)
       @output.puts(details_message("Updated",article))
       @output.puts(messages[state])
     end
@@ -73,11 +73,10 @@ module ArticleManager
       @state ||= :normal
     end
 
-  	private
-
-  	def import_message(articles)
+    private
+    def import_message(articles)
       message_heading("Added ", "Record", articles) << articles.collect { | article | "\n\t#{article.title}" }.join
-  	end
+    end
 
     def list_message(articles)
       message_heading("", "Repository", articles) << articles.collect.with_index { | article, i | "\n\t[#{(i + 1).to_s}]: #{article.title} - #{article.url}" }.join
@@ -107,10 +106,6 @@ module ArticleManager
 
     def exit_from_details_screen
       @state = :normal
-    end
-
-    def valid_article?(article)
-      article.is_a?(Article)
     end
   end
 end

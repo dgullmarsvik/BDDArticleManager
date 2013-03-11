@@ -12,8 +12,8 @@ module ArticleManager
   			@title = "Error, Row #{index}: Not a valid URL."
   		when "invalid date"
   			@title = "Error, Row #{index}: Not a valid Date."
-  		when "Missing Title"
-  			@title = "Error, Row #{index}: Missing title for article."
+      when "Missing Title"
+        @title = "Error, Row #{index}: Missing title for article."
       when "Not an Article"
         @title = "Error, Row #{index}: Object is not an Article."
       when "Duplicate Article"
@@ -22,10 +22,10 @@ module ArticleManager
         @title = "Error: Only positive integers are allowed to be ids."
       when "Non-Existant Article"
         @title = "Error: No article with ID: '#{index}' exists."
-  		else
-  			@title = "Error, Row #{index}: #{error}"
-  		end
-  	end
+      else
+        @title = "Error, Row #{index}: #{error}"
+      end
+    end
 
     def to_s
       @title

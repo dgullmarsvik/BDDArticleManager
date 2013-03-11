@@ -2,7 +2,7 @@ require 'uri'
 require 'date'
 
 module ArticleManager
-	class Article
+  class Article
   	attr_accessor :id, :title, :url, :date, :categories, :description
   		
   	def initialize(article_array)

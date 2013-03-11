@@ -48,7 +48,7 @@ module ArticleManager
 		def salvage_bad_id(id)
 			if !id.is_a?(Integer) || id <= 0
 				ExceptionArticle.new("ID Is Non-Positive-Integer", id)
-			elsif id > @articles.length
+			else
 				ExceptionArticle.new("Non-Existant Article", id)
 			end
 		end
@@ -58,15 +58,18 @@ module ArticleManager
 		end
 
 		def salvage_bad_update(id, article)
-			if is_id_bad?(id)
-				salvage_bad_id(id)
-			else
-				salvage_bad_article(id, article)
-			end
+			is_id_bad?(id) ? salvage_bad_id(id) : salvage_bad_article(id, article)
 		end
 
 		def is_insert_bad?(article)
 			is_article_bad?(article) || exists?(article)
+		end
+
+		def is_article_bad?(article)
+			!article.is_a?(Article) ||
+			article.title == "" ||
+			is_date_bad?(article) ||
+			is_url_bad?(article)
 		end
 
 		def salvage_bad_article(id, article)
@@ -85,13 +88,6 @@ module ArticleManager
 			else
 				ExceptionArticle.new("Unknown Error", id)
 			end
-		end
-
-		def is_article_bad?(article)
-			!article.is_a?(Article) ||
-			article.title == "" ||
-			is_date_bad?(article) ||
-			is_url_bad?(article)
 		end
 
 		def is_date_bad?(article)
