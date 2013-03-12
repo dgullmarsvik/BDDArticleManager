@@ -73,6 +73,10 @@ module ArticleManager
       @state ||= :normal
     end
 
+    def number_of_articles
+      @article_repository.find_all.length
+    end
+
     private
     def import_message(articles)
       message_heading("Added ", "Record", articles) << articles.collect { | article | "\n\t#{article.title}" }.join

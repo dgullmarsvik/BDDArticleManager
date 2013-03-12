@@ -1,0 +1,76 @@
+#!/usr/bin/env ruby
+$LOAD_PATH.unshift File.expand_path('../../lib',__FILE__)
+require 'articlemanager'
+
+def is_id?(input)
+	input.to_s.match(/^[\d]+$/) == nil ? false : true
+end
+
+def is_valid_id?(id, number_of_articles)
+	id > 0 && id <= number_of_articles
+end
+
+def is_input_for_article_details_screen?
+
+end
+
+parser = ArticleManager::ArticleRecordParser.new
+repository = ArticleManager::ArticleRepository.new
+program = ArticleManager::Controller.new(STDOUT, parser, repository)
+current_id = -1
+
+program.start
+while !program.shutdown
+	puts "\nEnter Command: "
+  input = gets.chomp
+
+  if true #is_input_for_article_details_screen?
+  	case input
+		when 'e'
+			current_id = -1
+			program.exit_details_screen
+		when 'u'
+			program.update_article_with_id(current_id, nil)
+		when 'd'
+			program.delete_article_with_id(current_id)
+		when '?'
+		  program.help
+		when 'h'
+		  program.help
+		when 'q'
+			program.quit
+		else
+		  program_bad_command
+		end
+  else
+	  if is_id?(input)
+	  	id = input.to_i
+			if is_valid_id?(id, program.number_of_articles)
+				current_id = id
+				program.list_details_for_article_with_id(id)
+			else
+				puts "\nError: ID must be between 1 and the total number of articles."
+				program.list_all_articles
+			end
+		else
+		  case input
+		  when 'l'
+		  	program.list_all_articles
+			when 'i'
+		  	program.import
+		  when 'a'
+		  	puts "\nCommand not yet implemented"
+		  when 'e'
+		  	puts "\nCommand not yet implemented"
+		  when 'q'
+		  	program.quit
+		  when '?'
+		  	program.help
+		  when 'h'
+		  	program.help
+		  else
+		  	program.bad_command
+		  end
+	  end
+	end
+end
