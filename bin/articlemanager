@@ -24,7 +24,7 @@ while !program.shutdown
 	puts "\nEnter Command: "
   input = gets.chomp
 
-  if true #is_input_for_article_details_screen?
+  if is_input_for_article_details_screen?
   	case input
 		when 'e'
 			current_id = -1
