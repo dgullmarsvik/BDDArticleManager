@@ -5,6 +5,15 @@ Description: A Simple program showcasing Cucumber + RSpec
 
 Author: David Gullmarsvik
 
+To run the program
+--------------------
+
+Got o /bin-directory
+
+Mac/Linux, type: ./articlemanager (make sure to 'chmod +x articlemanager' first)
+
+Windows, type: articlemanager.bat (not tested... ;)
+
 Layout:
 ---------
 - features: Cucumber features
