@@ -24,6 +24,10 @@ module ArticleManager
       state == :shutdown
     end
 
+    def details
+      state == :details
+    end
+
   	def import(article_record)
   		parsed_articles = @article_parser.parse(article_record)
       imported_articles = @article_repository.add_array(parsed_articles)

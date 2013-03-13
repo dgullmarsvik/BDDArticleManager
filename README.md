@@ -8,20 +8,26 @@ Author: David Gullmarsvik
 To run the program
 --------------------
 
-Got o /bin-directory
+Go to /bin-directory
 
 Mac/Linux, type: ./articlemanager (make sure to 'chmod +x articlemanager' first)
 
 Windows, type: articlemanager.bat (not tested... ;)
+
+The articlemanager script is only supposed to showcase the program.
+
+Some functionality in the source code is not reflected in the script. E.g. the import function has a lot of test code, but is use statically in the script.
+
+The code in the bin/articlemanager-script does not have any tests. This was due to time constraints.
 
 Layout:
 ---------
 - features: Cucumber features
 - spec: RSpec Examples
 - lib: Ruby Source Code
-	- ArticleRepository: Wrapper around the (non-existant)Persistance layer.
+	- ArticleRepository: Wrapper around the (non-existant) database.
 	
-	- Article: Represents an article
+	- Article: Represents an article (title, url, etc)
 	
 	- ExceptionArticle: Used for Error Handling
 	
@@ -46,6 +52,6 @@ Features I'm not satisfied with
 
 - [ ] No Export to CSV Command
 
-- [ ] A lot of code duplication between list_details and delete for an article
+- [ ] Some code duplication.
 
 - [ ] Not enough RSpec Examples... ;)
