@@ -46,6 +46,10 @@ module ArticleManager
 				it "raises Exception with 'Missing Title' when the Title field is missing" do
 					expect {Article.new(["2012-01-01","","https://example.org/1/","Tutorial","Description"])}.to raise_error("Missing Title")
 				end
+
+				it "raises Exception with 'Missing Title' when the Title field is missing" do
+					expect {"asdf".count}.to raise_error("Missing Title")
+				end				
 			end
 		end
 
