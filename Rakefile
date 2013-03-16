@@ -1,3 +1,8 @@
+require 'rubygems'
+require 'cucumber'
+require 'cucumber/rake/task'
+require 'rspec/core/rake_task'
+
 task :default => [:features,:spec]
 
 Cucumber::Rake::Task.new(:features) do |t|
