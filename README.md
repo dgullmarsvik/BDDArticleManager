@@ -5,6 +5,8 @@ Description: A Simple program showcasing Cucumber + RSpec
 
 Author: David Gullmarsvik
 
+Ändring för Travis CI
+
 To run the program
 --------------------
 
